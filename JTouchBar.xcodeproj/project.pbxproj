@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		77437EC21F9E849C0064C69F /* JavaTouchBarResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC01F9E849C0064C69F /* JavaTouchBarResponder.h */; };
+		77437EC31F9E849C0064C69F /* JavaTouchBarResponder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437EC11F9E849C0064C69F /* JavaTouchBarResponder.mm */; };
+		77437ECA1F9E84A60064C69F /* JavaTouchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC41F9E84A60064C69F /* JavaTouchBar.h */; };
+		77437ECB1F9E84A60064C69F /* JavaTouchBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437EC51F9E84A60064C69F /* JavaTouchBar.mm */; };
+		77437ECC1F9E84A60064C69F /* JavaGroupTouchBarItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437EC61F9E84A60064C69F /* JavaGroupTouchBarItem.mm */; };
+		77437ECD1F9E84A60064C69F /* JavaTouchBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC71F9E84A60064C69F /* JavaTouchBarItem.h */; };
+		77437ECE1F9E84A60064C69F /* JavaGroupTouchBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC81F9E84A60064C69F /* JavaGroupTouchBarItem.h */; };
+		77437ECF1F9E84A60064C69F /* JavaTouchBarItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437EC91F9E84A60064C69F /* JavaTouchBarItem.mm */; };
+		77437ED61F9E84B20064C69F /* JTouchBarJNI.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437ED01F9E84B20064C69F /* JTouchBarJNI.h */; };
+		77437ED71F9E84B20064C69F /* JNIUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED11F9E84B20064C69F /* JNIUtils.cpp */; };
+		77437ED81F9E84B20064C69F /* JNIUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437ED21F9E84B20064C69F /* JNIUtils.h */; };
+		77437ED91F9E84B20064C69F /* JTouchBarJNI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */; };
+		77437EDA1F9E84B20064C69F /* JNIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437ED41F9E84B20064C69F /* JNIContext.h */; };
+		77437EDB1F9E84B20064C69F /* JNIContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED51F9E84B20064C69F /* JNIContext.cpp */; };
+		77E658BE1F8F7124000832B4 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E658BD1F8F7124000832B4 /* JavaVM.framework */; };
+		77E658C01F8F7218000832B4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E658BF1F8F7218000832B4 /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		77437EC01F9E849C0064C69F /* JavaTouchBarResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaTouchBarResponder.h; path = "src/main/objective-c++/JavaTouchBarResponder.h"; sourceTree = SOURCE_ROOT; };
+		77437EC11F9E849C0064C69F /* JavaTouchBarResponder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaTouchBarResponder.mm; path = "src/main/objective-c++/JavaTouchBarResponder.mm"; sourceTree = SOURCE_ROOT; };
+		77437EC41F9E84A60064C69F /* JavaTouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaTouchBar.h; path = "src/main/objective-c++/Bridged/JavaTouchBar.h"; sourceTree = SOURCE_ROOT; };
+		77437EC51F9E84A60064C69F /* JavaTouchBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaTouchBar.mm; path = "src/main/objective-c++/Bridged/JavaTouchBar.mm"; sourceTree = SOURCE_ROOT; };
+		77437EC61F9E84A60064C69F /* JavaGroupTouchBarItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaGroupTouchBarItem.mm; path = "src/main/objective-c++/Bridged/JavaGroupTouchBarItem.mm"; sourceTree = SOURCE_ROOT; };
+		77437EC71F9E84A60064C69F /* JavaTouchBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaTouchBarItem.h; path = "src/main/objective-c++/Bridged/JavaTouchBarItem.h"; sourceTree = SOURCE_ROOT; };
+		77437EC81F9E84A60064C69F /* JavaGroupTouchBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaGroupTouchBarItem.h; path = "src/main/objective-c++/Bridged/JavaGroupTouchBarItem.h"; sourceTree = SOURCE_ROOT; };
+		77437EC91F9E84A60064C69F /* JavaTouchBarItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaTouchBarItem.mm; path = "src/main/objective-c++/Bridged/JavaTouchBarItem.mm"; sourceTree = SOURCE_ROOT; };
+		77437ED01F9E84B20064C69F /* JTouchBarJNI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JTouchBarJNI.h; path = "src/main/objective-c++/Bridged/JNI/JTouchBarJNI.h"; sourceTree = SOURCE_ROOT; };
+		77437ED11F9E84B20064C69F /* JNIUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JNIUtils.cpp; path = "src/main/objective-c++/Bridged/JNI/JNIUtils.cpp"; sourceTree = SOURCE_ROOT; };
+		77437ED21F9E84B20064C69F /* JNIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNIUtils.h; path = "src/main/objective-c++/Bridged/JNI/JNIUtils.h"; sourceTree = SOURCE_ROOT; };
+		77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JTouchBarJNI.cpp; path = "src/main/objective-c++/Bridged/JNI/JTouchBarJNI.cpp"; sourceTree = SOURCE_ROOT; };
+		77437ED41F9E84B20064C69F /* JNIContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNIContext.h; path = "src/main/objective-c++/Bridged/JNI/JNIContext.h"; sourceTree = SOURCE_ROOT; };
+		77437ED51F9E84B20064C69F /* JNIContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JNIContext.cpp; path = "src/main/objective-c++/Bridged/JNI/JNIContext.cpp"; sourceTree = SOURCE_ROOT; };
+		77E658BD1F8F7124000832B4 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
+		77E658BF1F8F7218000832B4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		77EF78A01F8F70DF00E7211F /* libJTouchBar.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libJTouchBar.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		77EF789D1F8F70DF00E7211F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77E658C01F8F7218000832B4 /* Cocoa.framework in Frameworks */,
+				77E658BE1F8F7124000832B4 /* JavaVM.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		77437EBD1F9E84050064C69F /* JTouchBar */ = {
+			isa = PBXGroup;
+			children = (
+				77437EC01F9E849C0064C69F /* JavaTouchBarResponder.h */,
+				77437EC11F9E849C0064C69F /* JavaTouchBarResponder.mm */,
+				77437EBE1F9E840C0064C69F /* Bridged */,
+			);
+			name = JTouchBar;
+			sourceTree = "<group>";
+		};
+		77437EBE1F9E840C0064C69F /* Bridged */ = {
+			isa = PBXGroup;
+			children = (
+				77437EC81F9E84A60064C69F /* JavaGroupTouchBarItem.h */,
+				77437EC61F9E84A60064C69F /* JavaGroupTouchBarItem.mm */,
+				77437EC41F9E84A60064C69F /* JavaTouchBar.h */,
+				77437EC51F9E84A60064C69F /* JavaTouchBar.mm */,
+				77437EC71F9E84A60064C69F /* JavaTouchBarItem.h */,
+				77437EC91F9E84A60064C69F /* JavaTouchBarItem.mm */,
+				77437EBF1F9E84110064C69F /* JNI */,
+			);
+			name = Bridged;
+			sourceTree = "<group>";
+		};
+		77437EBF1F9E84110064C69F /* JNI */ = {
+			isa = PBXGroup;
+			children = (
+				77437ED51F9E84B20064C69F /* JNIContext.cpp */,
+				77437ED41F9E84B20064C69F /* JNIContext.h */,
+				77437ED11F9E84B20064C69F /* JNIUtils.cpp */,
+				77437ED21F9E84B20064C69F /* JNIUtils.h */,
+				77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */,
+				77437ED01F9E84B20064C69F /* JTouchBarJNI.h */,
+			);
+			name = JNI;
+			sourceTree = "<group>";
+		};
+		77E658BC1F8F7124000832B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77E658BF1F8F7218000832B4 /* Cocoa.framework */,
+				77E658BD1F8F7124000832B4 /* JavaVM.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		77EF78971F8F70DF00E7211F = {
+			isa = PBXGroup;
+			children = (
+				77EF78A11F8F70DF00E7211F /* Products */,
+				77437EBD1F9E84050064C69F /* JTouchBar */,
+				77E658BC1F8F7124000832B4 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		77EF78A11F8F70DF00E7211F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				77EF78A01F8F70DF00E7211F /* libJTouchBar.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		77EF789E1F8F70DF00E7211F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77437ECA1F9E84A60064C69F /* JavaTouchBar.h in Headers */,
+				77437EC21F9E849C0064C69F /* JavaTouchBarResponder.h in Headers */,
+				77437ECD1F9E84A60064C69F /* JavaTouchBarItem.h in Headers */,
+				77437ECE1F9E84A60064C69F /* JavaGroupTouchBarItem.h in Headers */,
+				77437ED81F9E84B20064C69F /* JNIUtils.h in Headers */,
+				77437EDA1F9E84B20064C69F /* JNIContext.h in Headers */,
+				77437ED61F9E84B20064C69F /* JTouchBarJNI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		77EF789F1F8F70DF00E7211F /* JTouchBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77EF78A91F8F70DF00E7211F /* Build configuration list for PBXNativeTarget "JTouchBar" */;
+			buildPhases = (
+				77EF789C1F8F70DF00E7211F /* Sources */,
+				77EF789D1F8F70DF00E7211F /* Frameworks */,
+				77EF789E1F8F70DF00E7211F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JTouchBar;
+			productName = JTouchBar;
+			productReference = 77EF78A01F8F70DF00E7211F /* libJTouchBar.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		77EF78981F8F70DF00E7211F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = Thizzer.com;
+				TargetAttributes = {
+					77EF789F1F8F70DF00E7211F = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 77EF789B1F8F70DF00E7211F /* Build configuration list for PBXProject "JTouchBar" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 77EF78971F8F70DF00E7211F;
+			productRefGroup = 77EF78A11F8F70DF00E7211F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				77EF789F1F8F70DF00E7211F /* JTouchBar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		77EF789C1F8F70DF00E7211F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77437EDB1F9E84B20064C69F /* JNIContext.cpp in Sources */,
+				77437ECF1F9E84A60064C69F /* JavaTouchBarItem.mm in Sources */,
+				77437ED71F9E84B20064C69F /* JNIUtils.cpp in Sources */,
+				77437EC31F9E849C0064C69F /* JavaTouchBarResponder.mm in Sources */,
+				77437ECB1F9E84A60064C69F /* JavaTouchBar.mm in Sources */,
+				77437ED91F9E84B20064C69F /* JTouchBarJNI.cpp in Sources */,
+				77437ECC1F9E84A60064C69F /* JavaGroupTouchBarItem.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		77EF78A71F8F70DF00E7211F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CONFIGURATION_BUILD_DIR = libs/Debug;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		77EF78A81F8F70DF00E7211F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CONFIGURATION_BUILD_DIR = libs/Release;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		77EF78AA1F8F70DF00E7211F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CONFIGURATION_BUILD_DIR = src/debug/resources/lib/;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib",
+					"$(LOCAL_LIBRARY_DIR)/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/",
+				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					"objective-c++",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		77EF78AB1F8F70DF00E7211F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CONFIGURATION_BUILD_DIR = src/release/resources/lib/;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib",
+					"$(LOCAL_LIBRARY_DIR)/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/",
+				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					"objective-c++",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		77EF789B1F8F70DF00E7211F /* Build configuration list for PBXProject "JTouchBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77EF78A71F8F70DF00E7211F /* Debug */,
+				77EF78A81F8F70DF00E7211F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77EF78A91F8F70DF00E7211F /* Build configuration list for PBXNativeTarget "JTouchBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77EF78AA1F8F70DF00E7211F /* Debug */,
+				77EF78AB1F8F70DF00E7211F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 77EF78981F8F70DF00E7211F /* Project object */;
+}

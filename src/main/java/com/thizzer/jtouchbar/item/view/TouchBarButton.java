@@ -1,0 +1,74 @@
+/**
+ * JTouchBar
+ *
+ * Copyright (c) 2017 thizzer.com
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE file for details.
+ *
+ * @author  	M. ten Veldhuis
+ */
+package com.thizzer.jtouchbar.item.view;
+
+import com.thizzer.jtouchbar.common.*;
+import com.thizzer.jtouchbar.item.view.action.TouchBarViewAction;
+
+public class TouchBarButton extends TouchBarView {
+
+	private String _title;
+	
+	private Image _image;
+	private int _imagePosition;
+	
+	private Color _bezelColor;
+	
+	private TouchBarViewAction _action;
+	
+	public String getTitle() {
+		return _title;
+	}
+
+	public void setTitle(String title) {
+		_title = title;
+	}
+
+	public Image getImage() {
+		return _image;
+	}
+
+	public void setImage(Image image) {
+		_image = image;
+	}
+
+	public int getImagePosition() {
+		return _imagePosition;
+	}
+
+	public void setImagePosition(int imagePosition) {
+		_imagePosition = imagePosition;
+	}
+
+	public Color getBezelColor() {
+		return _bezelColor;
+	}
+
+	public void setBezelColor(Color bezelColor) {
+		_bezelColor = bezelColor;
+	}
+	
+	public TouchBarViewAction getAction() {
+		return _action;
+	}
+
+	public void setAction(TouchBarViewAction action) {
+		_action = action;
+	}
+
+	public void trigger() {
+		if(_action == null) {
+			return;
+		}
+		
+		_action.onCall(this);
+	}
+}
