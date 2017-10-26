@@ -1,4 +1,15 @@
 language: java 
-jdk:
-  - oraclejdk8
-  
+
+sudo: false
+
+os: osx
+osx_image: xcode9.1
+before_install:
+  - bash .travis-prepare.sh
+
+install: true
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.binaries
