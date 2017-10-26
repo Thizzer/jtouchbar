@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Thizzer/JTouchBar.svg?branch=master)](https://travis-ci.org/Thizzer/JTouchBar)
+
 # JTouchBar
 
 Java library for using the touchbar API on supported macbooks.

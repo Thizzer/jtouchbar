@@ -9,6 +9,12 @@ before_install:
 
 install: true
 
+script:
+  - xcodebuild -scheme JTouchBar-Debug
+  - mvn -B clean install -f pom-debug.xml
+  - xcodebuild -scheme JTouchBar-Release
+  - mvn -B clean install -f pom.xml
+
 cache:
   directories:
     - $HOME/.m2
