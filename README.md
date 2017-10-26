@@ -4,6 +4,16 @@
 
 Java library for using the touchbar API on supported macbooks.
 
+### Maven
+
+```
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+
 ### Using JTouchBar with SWT
 
 ```
