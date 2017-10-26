@@ -10,9 +10,13 @@
  */
 package com.thizzer.jtouchbar.item;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import com.thizzer.jtouchbar.JTouchBarJNI;
 import com.thizzer.jtouchbar.item.view.TouchBarView;
 
-public class TouchBarItem {
+public class TouchBarItem implements Observer {
 	
 	/**
 	 * Naming for the following 4 variables is probably under Apple's copyright
@@ -41,39 +45,79 @@ public class TouchBarItem {
 	
 	public TouchBarItem(String identifier, TouchBarView view, boolean customizationAllowed) {
 		_identifier = identifier;
-		_view = view;
 		_customizationAllowed = customizationAllowed;
+		
+		setView(view);
 	}
 
 	public String getIdentifier() {
 		return _identifier;
 	}
 
-	public void setIdentifier( String identifier ) {
+	public void setIdentifier(String identifier) {
 		_identifier = identifier;
+		update();
 	}
 
 	public TouchBarView getView() {
 		return _view;
 	}
 
-	public void setView( TouchBarView view ) {
+	public void setView(TouchBarView view) {
 		_view = view;
+		
+		if(_view != null) {
+			_view.deleteObservers();
+			_view.addObserver(this);
+		}
+		
+		update();
 	}
 
 	public String getCustomizationLabel() {
 		return _customizationLabel;
 	}
 
-	public void setCustomizationLabel( String customizationLabel ) {
+	public void setCustomizationLabel(String customizationLabel) {
 		_customizationLabel = customizationLabel;
+		update();
 	}
 
 	public boolean isCustomizationAllowed() {
 		return _customizationAllowed;
 	}
 
-	public void setCustomizationAllowed( boolean customizationAllowed ) {
+	public void setCustomizationAllowed(boolean customizationAllowed) {
 		_customizationAllowed = customizationAllowed;
+		update();
 	}
+	
+	@Override
+	public void update(Observable observable, Object obj) {
+		update();
+	}
+	
+	private void update() {
+		updateNativeInstance();
+	}
+	
+	/**
+	 * 
+	 */
+	
+	private long _nativeInstancePointer = 0L;
+	
+	void setNativeInstancePointer(long nativeInstancePointer) {
+		_nativeInstancePointer = nativeInstancePointer;
+	}
+	
+	private void updateNativeInstance() {
+		if(_nativeInstancePointer == 0) {
+			return;
+		}
+		
+		JTouchBarJNI.updateTouchBarItem(_nativeInstancePointer);
+	}
+
+	
 }

@@ -30,6 +30,7 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setTitle(String title) {
 		_title = title;
+		update();
 	}
 
 	public Image getImage() {
@@ -38,6 +39,7 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setImage(Image image) {
 		_image = image;
+		update();
 	}
 
 	public int getImagePosition() {
@@ -46,6 +48,7 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setImagePosition(int imagePosition) {
 		_imagePosition = imagePosition;
+		update();
 	}
 
 	public Color getBezelColor() {
@@ -54,6 +57,7 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setBezelColor(Color bezelColor) {
 		_bezelColor = bezelColor;
+		update();
 	}
 	
 	public TouchBarViewAction getAction() {
@@ -62,6 +66,7 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setAction(TouchBarViewAction action) {
 		_action = action;
+		update();
 	}
 
 	public void trigger() {

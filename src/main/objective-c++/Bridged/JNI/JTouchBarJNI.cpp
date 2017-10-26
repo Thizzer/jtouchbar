@@ -22,7 +22,7 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
         return;
     }
     
-    NSView *nsView = (NSView*) CFBridgingRelease(nsViewPointer);
+    NSView *nsView = (__bridge NSView*) (nsViewPointer);
     if(nsView == nil) {
         return;
     }
@@ -49,4 +49,18 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
         // TODO delete old global ref
         jTouchBarResponder.jTouchBar.javaRepr = touchBar;
     }
+}
+
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarItem(JNIEnv *env, jclass cls, jlong itemPointer) {
+    void* cItemPointer = (void*)itemPointer;
+    if(cItemPointer == nullptr) {
+        return;
+    }
+    
+    JavaTouchBarItem *touchBarItem = (__bridge JavaTouchBarItem*) (cItemPointer);
+    if(touchBarItem == nil) {
+        return;
+    }
+    
+    [touchBarItem update];
 }

@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-class JTouchBarJNI {
+public class JTouchBarJNI {
 
 	static {
 		try {
@@ -26,7 +26,9 @@ class JTouchBarJNI {
 		}
 	}
 	
-	static native void setTouchBar0(long viewPointer, JTouchBar touchBar);
+	public static native void setTouchBar0(long viewPointer, JTouchBar touchBar);
+	
+	public static native void updateTouchBarItem(long nativeInstancePointer);
 	
 	private static long getAWTViewPointer(Component c) {
 	    try {

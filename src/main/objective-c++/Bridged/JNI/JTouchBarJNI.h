@@ -19,6 +19,8 @@ extern "C" {
     
 JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIEnv *, jclass, jlong, jobject);
     
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarItem(JNIEnv *, jclass, jlong);
+    
 #ifdef __cplusplus
 }
 #endif

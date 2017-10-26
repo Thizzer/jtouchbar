@@ -10,6 +10,12 @@
  */
 package com.thizzer.jtouchbar.item.view;
 
-public abstract class TouchBarView {
+import java.util.Observable;
 
+public abstract class TouchBarView extends Observable {
+	
+	void update() {
+		setChanged();
+		notifyObservers();
+	}
 }

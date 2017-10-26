@@ -24,12 +24,22 @@
     NSString *_identifier;
     NSString *_customizationLabel;
     BOOL _customizationAllowed;
+    
+    NSView *_view;
 }
+
+-(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
+-(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
+-(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView  NS_AVAILABLE_MAC(10_12_2);
 
 -(void) trigger:(id)target;
 @end
 
 @implementation JavaTouchBarItem
+
+-(void) update {
+    [self createOrUpdateView];
+}
 
 -(NSTouchBarItem*) getTouchBarItem {
     if(_javaRepr == NULL) {
@@ -39,6 +49,8 @@
     JNIEnv *env; JNIContext context(&env);
     
     NSString *identifier = [self getIdentifier:env reload:TRUE];
+    
+    JNIUtils::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
     
     NSCustomTouchBarItem *item = [[NSCustomTouchBarItem alloc] initWithIdentifier:identifier];
     item.customizationLabel = [self getCustomizationLabel:env reload:TRUE];
@@ -115,79 +127,103 @@
         return nil;
     }
     
+    [self createOrUpdateView];
+    
+    return _view;
+}
+
+-(NSView*) createOrUpdateView {
     JNIEnv *env; JNIContext context(&env);
     
     jobject jTouchBarView = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
     jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(jTouchBarView, buttonCls)) {
-        std::string title = JNIUtils::CallStringMethod(env, jTouchBarView, "getTitle");
-        NSButton *button = [NSButton buttonWithTitle:[NSString stringWithUTF8String:title.c_str()] target:self action:@selector(trigger:)];
-        
-        color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBezelColor");
-        [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
-        
-        image_t image = JNIUtils::CallImageMethod(env, jTouchBarView, "getImage");
-        if(!image.name.empty()) {
-            NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
-            [button setImage:nsImage];
+        if( _view == nil || ![_view isKindOfClass:[NSButton class]]) {
+            _view = [NSButton buttonWithTitle:@"" target:self action:@selector(trigger:)];
         }
-        else if(!image.path.empty()) {
-            NSImage *nsImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:image.path.c_str()]];
-            [button setImage:nsImage];
-        }
-        
-        if(button.image != nil) {
-            int imagePosition = JNIUtils::CallIntMethod(env, jTouchBarView, "getImagePosition");
-            [button setImagePosition:(NSCellImagePosition)imagePosition];
-        }
-       
-        return button;
+        [self updateButton:(NSButton*)_view env:env jTouchBarView:jTouchBarView];
     }
     
     jclass textFieldCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarTextField");
     if(env->IsInstanceOf(jTouchBarView, textFieldCls)) {
-        // get title
-        std::string stringValue = JNIUtils::CallStringMethod(env, jTouchBarView, "getStringValue");
-        NSTextField *textField = [NSTextField labelWithString:[NSString stringWithUTF8String:stringValue.c_str()]];
-        
-        return textField;
+        if( _view == nil || ![_view isKindOfClass:[NSTextField class]]) {
+            _view = [NSTextField labelWithString:@""];
+        }
+        [self updateTextField:(NSTextField*)_view env:env jTouchBarView:jTouchBarView];
     }
     
     jclass scrubberCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(jTouchBarView, scrubberCls)) {
-        NSScrubber *scrubber = [[NSScrubber alloc] init];
-        scrubber.delegate = self;
-        scrubber.dataSource = self;
-        
-        int mode = JNIUtils::CallIntMethod(env, jTouchBarView, "getMode"); // NSScrubberModeFree/NSScrubberModeFixed
-        scrubber.mode = (NSScrubberMode)mode;
-        scrubber.showsArrowButtons = JNIUtils::CallBooleanMethod(env, jTouchBarView, "getShowsArrowButtons");
-        
-        color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
-        [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
-        
-        int overlayStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
-        if(overlayStyle == 1) {
-            [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
-        }
-        else if(overlayStyle == 2) {
-            [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
+        if( _view == nil || ![_view isKindOfClass:[NSScrubber class]]) {
+            _view = [[NSScrubber alloc] init];
         }
         
-        int backgroundStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
-        if(backgroundStyle == 1) {
-            [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
-        }
-        else if(backgroundStyle == 2) {
-            [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
-        }
-        
-        return scrubber;
+        [self updateScrubber:(NSScrubber*)_view env:env jTouchBarView:jTouchBarView];
     }
     
-    return nil;
+    return _view;
 }
+
+-(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
+    std::string title = JNIUtils::CallStringMethod(env, jTouchBarView, "getTitle");
+    [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
+    
+    color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBezelColor");
+    [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    
+    image_t image = JNIUtils::CallImageMethod(env, jTouchBarView, "getImage");
+    if(!image.name.empty()) {
+        NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
+        [button setImage:nsImage];
+    }
+    else if(!image.path.empty()) {
+        NSImage *nsImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:image.path.c_str()]];
+        [button setImage:nsImage];
+    }
+    
+    if(button.image != nil) {
+        int imagePosition = JNIUtils::CallIntMethod(env, jTouchBarView, "getImagePosition");
+        [button setImagePosition:(NSCellImagePosition)imagePosition];
+    }
+}
+
+-(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
+    // get title
+    std::string stringValue = JNIUtils::CallStringMethod(env, jTouchBarView, "getStringValue");
+    [textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
+    
+}
+
+-(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView NS_AVAILABLE_MAC(10_12_2) {
+    scrubber.delegate = self;
+    scrubber.dataSource = self;
+    
+    int mode = JNIUtils::CallIntMethod(env, jTouchBarView, "getMode"); // NSScrubberModeFree/NSScrubberModeFixed
+    scrubber.mode = (NSScrubberMode)mode;
+    scrubber.showsArrowButtons = JNIUtils::CallBooleanMethod(env, jTouchBarView, "getShowsArrowButtons");
+    
+    color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
+    [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    
+    int overlayStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
+    if(overlayStyle == 1) {
+        [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
+    }
+    else if(overlayStyle == 2) {
+        [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
+    }
+    
+    int backgroundStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
+    if(backgroundStyle == 1) {
+        [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
+    }
+    else if(backgroundStyle == 2) {
+        [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
+    }
+}
+
+#pragma mark - NSButton
 
 -(void) trigger:(id)target {
     if(_javaRepr == nullptr) {

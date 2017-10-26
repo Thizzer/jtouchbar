@@ -20,5 +20,6 @@ public class TouchBarTextField extends TouchBarView {
 
 	public void setStringValue(String stringValue) {
 		_stringValue = stringValue;
+		update();
 	}
 }

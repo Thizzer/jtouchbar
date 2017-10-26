@@ -17,6 +17,8 @@
 
 @property (nonatomic) jobject javaRepr;
 
+-(void) update;
+
 -(NSTouchBarItem*) getTouchBarItem;
 
 -(NSString*) getIdentifier:(JNIEnv*)env reload:(BOOL)reload;

@@ -19,8 +19,10 @@
     NSString *_principalItemIdentifier;
     NSArray<JavaTouchBarItem*> *_jTouchBarItems;
 }
+
 -(NSString*) getCustomizationIdentifier:(JNIEnv*)env reload:(BOOL)reload;
 -(NSString*) getPrincipalItemIdentifier:(JNIEnv*)env reload:(BOOL)reload;
+
 -(NSArray<JavaTouchBarItem*>*) getTouchBarItems:(JNIEnv*)env reload:(BOOL)reload;
 @end
 

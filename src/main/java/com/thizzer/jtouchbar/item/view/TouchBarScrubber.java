@@ -31,6 +31,7 @@ public class TouchBarScrubber extends TouchBarView {
 
 	public void setMode(int mode) {
 		_mode = mode;
+		update();
 	}
 
 	public boolean getShowsArrowButtons() {
@@ -39,6 +40,7 @@ public class TouchBarScrubber extends TouchBarView {
 
 	public void setShowsArrowButtons(boolean showsArrowButtons) {
 		_showsArrowButtons = showsArrowButtons;
+		update();
 	}
 
 	public Color getBackgroundColor() {
@@ -47,6 +49,7 @@ public class TouchBarScrubber extends TouchBarView {
 
 	public void setBackgroundColor(Color backgroundColor) {
 		_backgroundColor = backgroundColor;
+		update();
 	}
 
 	public int getSelectionOverlayStyle() {
@@ -55,6 +58,7 @@ public class TouchBarScrubber extends TouchBarView {
 
 	public void setSelectionOverlayStyle(int selectionOverlayStyle) {
 		_selectionOverlayStyle = selectionOverlayStyle;
+		update();
 	}
 
 	public int getSelectionBackgroundStyle() {
@@ -63,6 +67,7 @@ public class TouchBarScrubber extends TouchBarView {
 
 	public void setSelectionBackgroundStyle(int selectionBackgroundStyle) {
 		_selectionBackgroundStyle = selectionBackgroundStyle;
+		update();
 	}
 
 	public ScrubberActionListener getActionListener() {
@@ -70,7 +75,7 @@ public class TouchBarScrubber extends TouchBarView {
     }
     
     public void setActionListener(ScrubberActionListener actionListener) {
-        _actionListener = actionListener;
+        _actionListener = actionListener; // dynamically resolved so does not require update to be called.
     }
     
     public ScrubberDataSource getDataSource() {
@@ -78,6 +83,6 @@ public class TouchBarScrubber extends TouchBarView {
     }
     
     public void setDataSource(ScrubberDataSource dataSource) {
-        _dataSource = dataSource;
+        _dataSource = dataSource; // dynamically resolved so does not require update to be called.
     }
 }
