@@ -2,10 +2,12 @@
     <servers>
         <server>
             <id>maven.central.release</id>
+            <username>${env.MAVEN_CENTRAL_USERNAME}</username>
             <password>${env.MAVEN_CENTRAL_TOKEN}</password>
         </server>
         <server>
             <id>maven.central.snapshot</id>
+            <username>${env.MAVEN_CENTRAL_USERNAME}</username>
             <password>${env.MAVEN_CENTRAL_TOKEN}</password>
         </server>
     </servers>
