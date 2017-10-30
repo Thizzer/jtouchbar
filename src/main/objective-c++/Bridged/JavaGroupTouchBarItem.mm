@@ -16,7 +16,6 @@
 #include <string>
 
 #include "JNIContext.h"
-#include "JNIUtils.h"
 
 #include "JavaTouchBar.h"
 
@@ -41,7 +40,7 @@
         
         NSString *identifier = [super getIdentifier:env reload:TRUE];
         
-        jobject groupTouchBar = JNIUtils::CallObjectMethod(env, self.javaRepr, "getGroupTouchBar", "com/thizzer/jtouchbar/JTouchBar");
+        jobject groupTouchBar = JNIContext::CallObjectMethod(env, self.javaRepr, "getGroupTouchBar", "com/thizzer/jtouchbar/JTouchBar");
         
         _jTouchBar = [[JavaTouchBar alloc] init];
         [_jTouchBar setJavaRepr:groupTouchBar];

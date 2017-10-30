@@ -16,7 +16,6 @@
 #include <string>
 
 #include "JNIContext.h"
-#include "JNIUtils.h"
 
 #include "JavaTouchBar.h"
 
@@ -33,6 +32,7 @@
 -(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView  NS_AVAILABLE_MAC(10_12_2);
 
 -(void) trigger:(id)target;
+-(void) sliderValueChanged:(id)target;
 @end
 
 @implementation JavaTouchBarItem
@@ -50,7 +50,7 @@
     
     NSString *identifier = [self getIdentifier:env reload:TRUE];
     
-    JNIUtils::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
+    JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
     
     NSCustomTouchBarItem *item = [[NSCustomTouchBarItem alloc] initWithIdentifier:identifier];
     item.customizationLabel = [self getCustomizationLabel:env reload:TRUE];
@@ -61,7 +61,7 @@
 
 -(NSString*) getIdentifier:(JNIEnv*)env reload:(BOOL)reload {
     if(reload) {
-        std::string identifier = JNIUtils::CallStringMethod(env, _javaRepr, "getIdentifier");
+        std::string identifier = JNIContext::CallStringMethod(env, _javaRepr, "getIdentifier");
         if(identifier.empty()) {
             _identifier = nil;
         }
@@ -84,7 +84,7 @@
 
 -(NSString*) getCustomizationLabel:(JNIEnv*)env reload:(BOOL)reload {
     if(reload) {
-        std::string customizationLabel = JNIUtils::CallStringMethod(env, _javaRepr, "getCustomizationLabel");
+        std::string customizationLabel = JNIContext::CallStringMethod(env, _javaRepr, "getCustomizationLabel");
         if(customizationLabel.empty()) {
             _customizationLabel = nil;
         }
@@ -107,7 +107,7 @@
 
 -(BOOL) isCustomizationAllowed:(JNIEnv*)env reload:(BOOL)reload {
     if(reload) {
-        _customizationAllowed = JNIUtils::CallBooleanMethod(env, _javaRepr, "isCustomizationAllowed");
+        _customizationAllowed = JNIContext::CallBooleanMethod(env, _javaRepr, "isCustomizationAllowed");
     }
     
     return _customizationAllowed;
@@ -135,9 +135,9 @@
 -(NSView*) createOrUpdateView {
     JNIEnv *env; JNIContext context(&env);
     
-    jobject jTouchBarView = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    jobject jTouchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
-    jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarButton");
+    jclass buttonCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(jTouchBarView, buttonCls)) {
         if( _view == nil || ![_view isKindOfClass:[NSButton class]]) {
             _view = [NSButton buttonWithTitle:@"" target:self action:@selector(trigger:)];
@@ -145,7 +145,7 @@
         [self updateButton:(NSButton*)_view env:env jTouchBarView:jTouchBarView];
     }
     
-    jclass textFieldCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarTextField");
+    jclass textFieldCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarTextField");
     if(env->IsInstanceOf(jTouchBarView, textFieldCls)) {
         if( _view == nil || ![_view isKindOfClass:[NSTextField class]]) {
             _view = [NSTextField labelWithString:@""];
@@ -153,7 +153,7 @@
         [self updateTextField:(NSTextField*)_view env:env jTouchBarView:jTouchBarView];
     }
     
-    jclass scrubberCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarScrubber");
+    jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(jTouchBarView, scrubberCls)) {
         if( _view == nil || ![_view isKindOfClass:[NSScrubber class]]) {
             _view = [[NSScrubber alloc] init];
@@ -162,17 +162,26 @@
         [self updateScrubber:(NSScrubber*)_view env:env jTouchBarView:jTouchBarView];
     }
     
+    jclass sliderCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarSlider");
+    if(env->IsInstanceOf(jTouchBarView, sliderCls)) {
+        if( _view == nil || ![_view isKindOfClass:[NSSlider class]]) {
+            _view = [NSSlider sliderWithTarget:self action:@selector(sliderValueChanged:)];
+        }
+        
+        [self updateSlider:(NSSlider*)_view env:env jTouchBarView:jTouchBarView];
+    }
+    
     return _view;
 }
 
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
-    std::string title = JNIUtils::CallStringMethod(env, jTouchBarView, "getTitle");
+    std::string title = JNIContext::CallStringMethod(env, jTouchBarView, "getTitle");
     [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
     
-    color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBezelColor");
+    color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBezelColor");
     [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
     
-    image_t image = JNIUtils::CallImageMethod(env, jTouchBarView, "getImage");
+    image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
     if(!image.name.empty()) {
         NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
         [button setImage:nsImage];
@@ -183,14 +192,14 @@
     }
     
     if(button.image != nil) {
-        int imagePosition = JNIUtils::CallIntMethod(env, jTouchBarView, "getImagePosition");
+        int imagePosition = JNIContext::CallIntMethod(env, jTouchBarView, "getImagePosition");
         [button setImagePosition:(NSCellImagePosition)imagePosition];
     }
 }
 
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
     // get title
-    std::string stringValue = JNIUtils::CallStringMethod(env, jTouchBarView, "getStringValue");
+    std::string stringValue = JNIContext::CallStringMethod(env, jTouchBarView, "getStringValue");
     [textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
     
 }
@@ -199,14 +208,14 @@
     scrubber.delegate = self;
     scrubber.dataSource = self;
     
-    int mode = JNIUtils::CallIntMethod(env, jTouchBarView, "getMode"); // NSScrubberModeFree/NSScrubberModeFixed
+    int mode = JNIContext::CallIntMethod(env, jTouchBarView, "getMode"); // NSScrubberModeFree/NSScrubberModeFixed
     scrubber.mode = (NSScrubberMode)mode;
-    scrubber.showsArrowButtons = JNIUtils::CallBooleanMethod(env, jTouchBarView, "getShowsArrowButtons");
+    scrubber.showsArrowButtons = JNIContext::CallBooleanMethod(env, jTouchBarView, "getShowsArrowButtons");
     
-    color_t color = JNIUtils::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
+    color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
     [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
     
-    int overlayStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
+    int overlayStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
     if(overlayStyle == 1) {
         [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
     }
@@ -214,13 +223,21 @@
         [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
     }
     
-    int backgroundStyle = JNIUtils::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
+    int backgroundStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
     if(backgroundStyle == 1) {
         [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
     }
     else if(backgroundStyle == 2) {
         [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
     }
+}
+
+-(void) updateSlider:(NSSlider*)slider env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView NS_AVAILABLE_MAC(10_12_2) {
+    double minValue = JNIContext::CallDoubleMethod(env, jTouchBarView, "getMinValue");
+    [slider setMinValue:minValue];
+    
+    double maxValue = JNIContext::CallDoubleMethod(env, jTouchBarView, "getMaxValue");
+    [slider setMaxValue:maxValue];
 }
 
 #pragma mark - NSButton
@@ -232,11 +249,31 @@
     
     JNIEnv *env; JNIContext context(&env);
     
-    jobject touchBarview = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    jobject touchBarview = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
-    jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarButton");
+    jclass buttonCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(touchBarview, buttonCls)) {
-        JNIUtils::CallVoidMethod(env, touchBarview, "trigger");
+        JNIContext::CallVoidMethod(env, touchBarview, "trigger");
+    }
+}
+
+-(void) sliderValueChanged:(id)target {
+    if(_javaRepr == nullptr) {
+        return;
+    }
+    
+    JNIEnv *env; JNIContext context(&env);
+    
+    jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    
+    jclass sliderCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarSlider");
+    if(env->IsInstanceOf(touchBarView, sliderCls)) {
+        jobject actionListener = JNIContext::CallObjectMethod(env, touchBarView, "getActionListener", "com/thizzer/jtouchbar/slider/SliderActionListener");
+        if(actionListener == nullptr) {
+            return;
+        }
+        
+        JNIContext::CallVoidMethod(env, actionListener, "sliderValueChanged", "Lcom/thizzer/jtouchbar/item/view/TouchBarSlider;D", touchBarView, [target doubleValue]);
     }
 }
 
@@ -248,16 +285,16 @@
     
     JNIEnv *env; JNIContext context(&env);
     
-    jobject touchBarView = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
-    jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarScrubber");
-    if(env->IsInstanceOf(touchBarView, buttonCls)) {
-        jobject actionListener = JNIUtils::CallObjectMethod(env, touchBarView, "getActionListener", "com/thizzer/jtouchbar/scrubber/ScrubberActionListener");
+    jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
+    if(env->IsInstanceOf(touchBarView, scrubberCls)) {
+        jobject actionListener = JNIContext::CallObjectMethod(env, touchBarView, "getActionListener", "com/thizzer/jtouchbar/scrubber/ScrubberActionListener");
         if(actionListener == nullptr) {
             return;
         }
         
-        JNIUtils::CallVoidMethod(env, actionListener, "didSelectItemAtIndex", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, selectedIndex);
+        JNIContext::CallVoidMethod(env, actionListener, "didSelectItemAtIndex", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, selectedIndex);
     }
 }
 
@@ -270,16 +307,16 @@
     
     JNIEnv *env; JNIContext context(&env);
     
-    jobject touchBarView = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
-    jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarScrubber");
-    if(env->IsInstanceOf(touchBarView, buttonCls)) {
-        jobject dataSource = JNIUtils::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
+    jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
+    if(env->IsInstanceOf(touchBarView, scrubberCls)) {
+        jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
             return 0;
         }
         
-        return JNIUtils::CallIntMethod(env, dataSource, "getNumberOfItems", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;", touchBarView);
+        return JNIContext::CallIntMethod(env, dataSource, "getNumberOfItems", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;", touchBarView);
     }
     
     return 0;
@@ -292,38 +329,37 @@
     
     JNIEnv *env; JNIContext context(&env);
     
-    jobject touchBarView = JNIUtils::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
     
-    jclass buttonCls = env->FindClass("com/thizzer/jtouchbar/item/view/TouchBarScrubber");
-    if(env->IsInstanceOf(touchBarView, buttonCls)) {
-        jobject dataSource = JNIUtils::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
+    jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
+    if(env->IsInstanceOf(touchBarView, scrubberCls)) {
+        jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
             return nil;
         }
         
-        jobject javaScrubberView = JNIUtils::CallObjectMethod(env, dataSource, "getViewForIndex", "com/thizzer/jtouchbar/scrubber/view/ScrubberView", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, index);
+        jobject javaScrubberView = JNIContext::CallObjectMethod(env, dataSource, "getViewForIndex", "com/thizzer/jtouchbar/scrubber/view/ScrubberView", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, index);
         if(javaScrubberView == nullptr) {
             return nil;
         }
         
-        std::string identifier = JNIUtils::CallStringMethod(env, javaScrubberView, "getIdentifier");
+        std::string identifier = JNIContext::CallStringMethod(env, javaScrubberView, "getIdentifier");
         
-        // TODO use full class..
-        jclass textItemViewCls = env->FindClass("com/thizzer/jtouchbar/scrubber/view/ScrubberTextItemView");
+        jclass textItemViewCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/scrubber/view/ScrubberTextItemView");
         if(env->IsInstanceOf(javaScrubberView, textItemViewCls)) {
             NSScrubberTextItemView *textItemView = [[NSScrubberTextItemView alloc] init];
             
-            std::string stringValue = JNIUtils::CallStringMethod(env, javaScrubberView, "getStringValue");
+            std::string stringValue = JNIContext::CallStringMethod(env, javaScrubberView, "getStringValue");
             [textItemView.textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
             
             return textItemView;
         }
         
-        jclass imageItemViewCls = env->FindClass("com/thizzer/jtouchbar/scrubber/view/ScrubberImageItemView");
+        jclass imageItemViewCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/scrubber/view/ScrubberImageItemView");
         if(env->IsInstanceOf(javaScrubberView, imageItemViewCls)) {
             NSScrubberImageItemView *imageItemView = [[NSScrubberImageItemView alloc] init];
             
-            image_t image = JNIUtils::CallImageMethod(env, javaScrubberView, "getImage");
+            image_t image = JNIContext::CallImageMethod(env, javaScrubberView, "getImage");
             if(!image.name.empty()) {
                 NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
                 [imageItemView setImage:nsImage];
@@ -333,7 +369,7 @@
                 [imageItemView setImage:nsImage];
             }
             
-            NSImageAlignment alignment = (NSImageAlignment)JNIUtils::CallIntMethod(env, javaScrubberView, "getAlignment");
+            NSImageAlignment alignment = (NSImageAlignment)JNIContext::CallIntMethod(env, javaScrubberView, "getAlignment");
             [imageItemView setImageAlignment:alignment];
             
             return imageItemView;

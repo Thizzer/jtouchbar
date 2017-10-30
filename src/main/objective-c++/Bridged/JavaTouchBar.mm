@@ -12,7 +12,6 @@
 
 #include <jni.h>
 #include "JNIContext.h"
-#include "JNIUtils.h"
 
 @interface JavaTouchBar() {
     NSString *_customizationIdentifier;
@@ -30,7 +29,7 @@
 
 -(NSString*) getCustomizationIdentifier:(JNIEnv*)env reload:(BOOL)reload {
     if(reload) {
-        std::string customizationIdentifier = JNIUtils::CallStringMethod(env, _javaRepr, "getCustomizationIdentifier");
+        std::string customizationIdentifier = JNIContext::CallStringMethod(env, _javaRepr, "getCustomizationIdentifier");
         _customizationIdentifier = [NSString stringWithUTF8String:customizationIdentifier.c_str()];
     }
     
@@ -48,7 +47,7 @@
 
 -(NSString*) getPrincipalItemIdentifier:(JNIEnv*)env reload:(BOOL)reload {
     if(reload) {
-        std::string principalItemIdentifier = JNIUtils::CallStringMethod(env, _javaRepr, "getPrincipalItemIdentifier");
+        std::string principalItemIdentifier = JNIContext::CallStringMethod(env, _javaRepr, "getPrincipalItemIdentifier");
         _principalItemIdentifier = [NSString stringWithUTF8String:principalItemIdentifier.c_str()];
     }
     
@@ -66,8 +65,8 @@
 
 -(NSArray<JavaTouchBarItem*>*) getTouchBarItems:(JNIEnv*)env reload:(BOOL)reload {
     if(_jTouchBarItems == nil || [_jTouchBarItems count] == 0 || reload) {
-        jobject touchBarItems = JNIUtils::CallObjectMethod(env, _javaRepr, "getItems", "java/util/List");
-        jobject touchBarItemIterator = JNIUtils::CallObjectMethod(env, touchBarItems, "iterator", "java/util/Iterator");
+        jobject touchBarItems = JNIContext::CallObjectMethod(env, _javaRepr, "getItems", "java/util/List");
+        jobject touchBarItemIterator = JNIContext::CallObjectMethod(env, touchBarItems, "iterator", "java/util/Iterator");
     
         jmethodID nextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "next", "()Ljava/lang/Object;");
         jmethodID hasNextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "hasNext", "()Z");
@@ -78,7 +77,7 @@
             
             JavaTouchBarItem *item = nil;
             
-            jclass groupItemCls = env->FindClass("com/thizzer/jtouchbar/item/GroupTouchBarItem");
+            jclass groupItemCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/GroupTouchBarItem");
             if(env->IsInstanceOf(touchBarItem, groupItemCls)) {
                 item = [[JavaGroupTouchBarItem alloc] init];
                 item.javaRepr = touchBarItem;
