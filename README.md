@@ -4,13 +4,14 @@
 
 Java library for using the touchbar API on supported macbooks.
 
-## Patreon
+## Support the Developers!
 
-We have setup a Patreon which will allow the developers to make more free time for Open Source development. 
+Please take a look at the other stuff the developers are working on and support them in other ways.
 
-* Patreon Page - https://www.patreon.com/nentix
-* [Become a Patron](https://www.patreon.com/bePatron?u=8554248)
-
+* [ttveldhuis](https://github.com/ttveldhuis)
+  * Patreon Page - https://www.patreon.com/ttveldhuis
+  * Blog - https://www.thizzer.com
+  
 ## Installation & Usage
 
 ### Maven
