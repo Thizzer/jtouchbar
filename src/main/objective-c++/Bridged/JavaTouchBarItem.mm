@@ -175,33 +175,45 @@
 }
 
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
+    // update title
     std::string title = JNIContext::CallStringMethod(env, jTouchBarView, "getTitle");
-    [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
+    });
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBezelColor");
-    [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
     if(!image.name.empty()) {
         NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
-        [button setImage:nsImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [button setImage:nsImage];
+        });
     }
     else if(!image.path.empty()) {
         NSImage *nsImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:image.path.c_str()]];
-        [button setImage:nsImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [button setImage:nsImage];
+        });
     }
-    
+        
     if(button.image != nil) {
         int imagePosition = JNIContext::CallIntMethod(env, jTouchBarView, "getImagePosition");
-        [button setImagePosition:(NSCellImagePosition)imagePosition];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [button setImagePosition:(NSCellImagePosition)imagePosition];
+        });
     }
 }
 
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
-    // get title
+    // update stringValue
     std::string stringValue = JNIContext::CallStringMethod(env, jTouchBarView, "getStringValue");
-    [textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
+    });
 }
 
 -(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView NS_AVAILABLE_MAC(10_12_2) {
@@ -213,23 +225,29 @@
     scrubber.showsArrowButtons = JNIContext::CallBooleanMethod(env, jTouchBarView, "getShowsArrowButtons");
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
-    [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+    });
     
     int overlayStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
-    if(overlayStyle == 1) {
-        [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
-    }
-    else if(overlayStyle == 2) {
-        [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(overlayStyle == 1) {
+            [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
+        }
+        else if(overlayStyle == 2) {
+            [scrubber setSelectionOverlayStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
+        }
+    });
     
     int backgroundStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
-    if(backgroundStyle == 1) {
-        [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
-    }
-    else if(backgroundStyle == 2) {
-        [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(backgroundStyle == 1) {
+            [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle outlineOverlayStyle]];
+        }
+        else if(backgroundStyle == 2) {
+            [scrubber setSelectionBackgroundStyle:[NSScrubberSelectionStyle roundedBackgroundStyle]];
+        }
+    });
 }
 
 -(void) updateSlider:(NSSlider*)slider env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView NS_AVAILABLE_MAC(10_12_2) {
