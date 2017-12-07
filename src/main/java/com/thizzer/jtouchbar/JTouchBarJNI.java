@@ -30,17 +30,7 @@ public class JTouchBarJNI {
 	
 	public static native void updateTouchBarItem(long nativeInstancePointer);
 	
-	private static long getAWTViewPointer(Component c) {
-	    try {
-	        Object componentPeer = c.getClass().getMethod("getPeer").invoke(c);
-	        Object platformWindow = componentPeer.getClass().getMethod("getPlatformWindow").invoke(componentPeer);
-	        Object contentView = platformWindow.getClass().getMethod("getContentView").invoke(platformWindow);
-	        return (Long) contentView.getClass().getMethod("getAWTView").invoke(contentView);
-	    } 
-	    catch (Exception exception) {
-	        throw new RuntimeException(exception);
-	    }
-	}
+	public static native long getAWTViewPointer0(Component c);
 	
 	private static void loadLibraryFromJar(String path) throws UnsatisfiedLinkError {
 		try (InputStream inputStream = JTouchBarJNI.class.getResourceAsStream(path)) {

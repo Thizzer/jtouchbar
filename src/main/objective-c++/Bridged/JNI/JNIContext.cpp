@@ -62,7 +62,7 @@ JNIContext::~JNIContext() {
     }
 }
 
-void JNIContext::CacheClasses(JNIEnv* env, std::vector<std::string> classnames) {
+void JNIContext::CacheClasses(JNIEnv* env, std::vector<std::string> classnames) {   
     try {
         for(std::string& classname : classnames) {
             jclass cls = JNIContext::GetOrFindClass(env, classname);
@@ -271,6 +271,22 @@ double JNIContext::CallDoubleMethod(JNIEnv* env, jobject target, const std::stri
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()D");
         
         value = env->CallDoubleMethod(target, methodId);
+    }
+    catch(exception& e) {
+        // TODO log error
+    }
+    
+    return value;
+}
+
+long JNIContext::CallLongMethod(JNIEnv* env, jobject target, const std::string& method) {
+    long value = 0L;
+    
+    try {
+        jclass targetCls = env->GetObjectClass(target);
+        jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()J");
+        
+        value = env->CallLongMethod(target, methodId);
     }
     catch(exception& e) {
         // TODO log error

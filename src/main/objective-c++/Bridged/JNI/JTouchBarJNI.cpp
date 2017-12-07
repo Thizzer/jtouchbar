@@ -12,6 +12,8 @@
 
 #include <Cocoa/Cocoa.h>
 #include <JavaVM/JavaVM.h>
+
+#include "JNIContext.h"
 #include "JavaTouchBarResponder.h"
 
 static NSMapTable<NSWindow*, JavaTouchBarResponder*> *windowMapping = [NSMapTable weakToStrongObjectsMapTable];
@@ -63,4 +65,39 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarIte
     }
     
     [touchBarItem update];
+}
+
+JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getAWTViewPointer0(JNIEnv *env, jclass cls, jobject component) {
+    jclass componentClass = env->GetObjectClass(component);
+    jfieldID peerField = env->GetFieldID(componentClass, "peer", "Ljava/awt/peer/ComponentPeer;");
+    if(peerField == nullptr) {
+        return 0L;
+    }
+    
+    jobject peer = env->GetObjectField(component, peerField);
+    if(peer == nullptr) {
+        return 0L;
+    }
+    
+    jobject window = JNIContext::CallObjectMethod(env, peer, "getPlatformWindow", "sun/lwawt/PlatformWindow");
+    if(window == nullptr) {
+        return 0L;
+    }
+    
+    jclass windowClass = env->FindClass("sun/lwawt/macosx/CPlatformWindow");
+    if(windowClass == nullptr) {
+        return 0L;
+    }
+    
+    jmethodID contentViewMethod = env->GetMethodID(windowClass, "getContentView", "()Lsun/lwawt/macosx/CPlatformView;");
+    if(contentViewMethod == nullptr) {
+        return 0L;
+    }
+    
+    jobject contentView = env->CallObjectMethod(window, contentViewMethod);
+    if(contentView == nullptr) {
+        return 0L;
+    }
+    
+    return JNIContext::CallLongMethod(env, contentView, "getAWTView");
 }

@@ -56,6 +56,8 @@ public:
     
     static double CallDoubleMethod(JNIEnv* env, jobject target, const std::string& method);
     
+    static long CallLongMethod(JNIEnv* env, jobject target, const std::string& method);
+    
     static color_t CallColorMethod(JNIEnv* env, jobject target, const std::string& method);
     static image_t CallImageMethod(JNIEnv* env, jobject target, const std::string& method);
 };
