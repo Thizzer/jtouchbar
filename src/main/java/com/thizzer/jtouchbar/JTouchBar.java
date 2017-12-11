@@ -56,13 +56,23 @@ public class JTouchBar {
 		getItems().add(touchBarItem);
 	}
 	
-	public void enableForComponent(Component c) {
+	public void show(Component c) {
 		long viewPointer = AWTUtils.getViewPointer(c);
 		JTouchBarJNI.setTouchBar0(viewPointer, this);
 	}
 	
-	public void enableForShell(Shell shell) {
+	public void show(Shell shell) {
 		long viewPointer = SWTUtils.getViewPointer(shell);
 		JTouchBarJNI.setTouchBar0(viewPointer, this);
+	}
+	
+	public void hide(Component c) {
+		long viewPointer = AWTUtils.getViewPointer(c);
+		JTouchBarJNI.setTouchBar0(viewPointer, null);
+	}
+	
+	public void hide(Shell shell) {
+		long viewPointer = SWTUtils.getViewPointer(shell);
+		JTouchBarJNI.setTouchBar0(viewPointer, null);
 	}
 }

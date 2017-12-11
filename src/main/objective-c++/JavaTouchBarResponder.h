@@ -20,6 +20,6 @@
 
 @property (nonatomic,retain) JavaTouchBar* jTouchBar;
 
--(instancetype)initWithWindow:(NSWindow*)window andJavaTouchBar:(JavaTouchBar*)jTouchBar;
+-(void) setTouchBar:(JavaTouchBar *)jTouchBar window:(NSWindow*)window;
 
 @end

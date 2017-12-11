@@ -32,7 +32,7 @@ public class JTouchBarAWTTest {
         frame.pack();
         frame.setVisible(true);
 
-        jTouchBar.enableForComponent(frame);
+        jTouchBar.show(frame);
 	}
 
 }

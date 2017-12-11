@@ -40,7 +40,7 @@ public class JTouchBarSWTTest {
 
         shell.open();
         
-        jTouchBar.enableForShell( shell );
+        jTouchBar.show( shell );
         
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {

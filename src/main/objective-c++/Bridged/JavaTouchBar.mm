@@ -104,6 +104,10 @@
 }
 
 -(NSTouchBar*) createNSTouchBar {
+    if(_javaRepr == nullptr) {
+        return nil;
+    }
+    
     NSTouchBar *touchBar = [[NSTouchBar alloc] init];
     
     NSMutableArray<NSString*>* defaultIdentifiers = [[NSMutableArray alloc] init];

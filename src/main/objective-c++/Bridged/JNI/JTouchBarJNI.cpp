@@ -34,22 +34,28 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
         return;
     }
     
-    if(touchBar == nullptr){
-        // TODO remove touchbar for window
+    JavaTouchBarResponder *jPreviousTouchBarResponder = [windowMapping objectForKey:nsWindow];
+    if(jPreviousTouchBarResponder == nil && touchBar == nullptr) {
         return;
     }
-
-    JavaTouchBarResponder *jTouchBarResponder = [windowMapping objectForKey:nsWindow];
-    if(jTouchBarResponder == nil) {
-        JavaTouchBar *jTouchBar = [[JavaTouchBar alloc] init];
-        jTouchBar.javaRepr = touchBar;
-
-        jTouchBarResponder = [[JavaTouchBarResponder alloc] initWithWindow:nsWindow andJavaTouchBar:jTouchBar];
-        [windowMapping setObject:jTouchBarResponder forKey:nsWindow];
+    
+    if(touchBar == nullptr) {
+        [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
+        [windowMapping removeObjectForKey:nsWindow];
     }
     else {
-        // TODO delete old global ref
-        jTouchBarResponder.jTouchBar.javaRepr = touchBar;
+        if(jPreviousTouchBarResponder != nil) {
+            // ensure the old references get destroyed
+            [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
+        }
+        
+        JavaTouchBarResponder *jTouchBarResponder = [[JavaTouchBarResponder alloc] init];
+        [windowMapping setObject:jTouchBarResponder forKey:nsWindow];
+        
+        JavaTouchBar *jTouchBar = [[JavaTouchBar alloc] init];
+        jTouchBar.javaRepr = touchBar;
+        
+        [jTouchBarResponder setTouchBar:jTouchBar window:nsWindow];
     }
 }
 

@@ -34,7 +34,7 @@ jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
 
 // Customize your touchbar
 
-jTouchBar.enableForShell(shell);
+jTouchBar.show(shell);
 ```
 
 ### Using JTouchBar with AWT
@@ -47,7 +47,7 @@ jTouchBar.setCustomizationIdentifier("MyAWTJavaTouchBar");
 
 // Customize your touchbar
 
-jTouchBar.enableForComponent(frame);
+jTouchBar.show(frame);
 ```
 
 ### Adding views to your touchbar
