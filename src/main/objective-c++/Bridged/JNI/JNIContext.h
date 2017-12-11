@@ -24,6 +24,7 @@ struct color_t {
 
 struct image_t {
     std::string name, path = "";
+    std::vector<unsigned char> data;
 };
 
 
@@ -47,6 +48,9 @@ public:
     static void CallVoidMethod(JNIEnv* env, jobject target, const std::string& method, const char* argsSig, ...);
     
     static std::string CallStringMethod(JNIEnv* env, jobject target, const std::string& method);
+    
+    static std::vector<unsigned char> CallByteArrayMethod(JNIEnv* env, jobject target, const std::string& method);
+        
     static bool CallBooleanMethod(JNIEnv* env, jobject target, const std::string& method);
     
     static int32_t CallIntMethod(JNIEnv* env, jobject target, const std::string& method);

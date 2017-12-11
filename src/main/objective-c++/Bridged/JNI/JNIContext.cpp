@@ -194,6 +194,37 @@ std::string JNIContext::CallStringMethod(JNIEnv* env, jobject target, const std:
     return value;
 }
 
+std::vector<unsigned char> JNIContext::CallByteArrayMethod(JNIEnv* env, jobject target, const std::string& method) {
+    std::vector<unsigned char> value;
+    
+    try {
+        std::string signature = "()[B";
+        
+        jclass targetCls = env->GetObjectClass(target);
+        jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), signature.c_str());
+        if(methodId == nullptr) {
+            return value;
+        }
+        
+        jbyteArray bytes = (jbyteArray) env->CallObjectMethod(target, methodId);
+        if(bytes == nullptr) {
+            return value;
+        }
+        
+        int32_t len = env->GetArrayLength((jbyteArray) bytes);
+        jbyte *jBytes = env->GetByteArrayElements((jbyteArray) bytes, 0);
+        
+        value.assign(jBytes, jBytes + len);
+        
+        env->ReleaseByteArrayElements(bytes, jBytes, JNI_ABORT);
+    }
+    catch(exception& e) {
+        // TODO log error
+    }
+    
+    return value;
+}
+
 bool JNIContext::CallBooleanMethod(JNIEnv* env, jobject target, const std::string& method) {
     bool value = false;
     
@@ -321,6 +352,7 @@ image_t JNIContext::CallImageMethod(JNIEnv* env, jobject target, const std::stri
     
     image.name = JNIContext::CallStringMethod(env, javaImage, "getName");
     image.path = JNIContext::CallStringMethod(env, javaImage, "getPath");
-    
+    image.data = JNIContext::CallByteArrayMethod(env, javaImage, "getData");
+        
     return image;
 }

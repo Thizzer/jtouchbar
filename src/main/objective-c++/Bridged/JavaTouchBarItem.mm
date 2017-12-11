@@ -33,6 +33,8 @@
 
 -(void) trigger:(id)target;
 -(void) sliderValueChanged:(id)target;
+
+-(NSImage*) getNSImage:(image_t)image;
 @end
 
 @implementation JavaTouchBarItem
@@ -187,17 +189,11 @@
     });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
-    if(!image.name.empty()) {
-        NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [button setImage:nsImage];
-        });
-    }
-    else if(!image.path.empty()) {
-        NSImage *nsImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:image.path.c_str()]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [button setImage:nsImage];
-        });
+    NSImage *nsImage = [self getNSImage:image];
+    if(nsImage != nil) {
+       dispatch_async(dispatch_get_main_queue(), ^{
+           [button setImage:nsImage];
+       });
     }
         
     if(button.image != nil) {
@@ -378,12 +374,8 @@
             NSScrubberImageItemView *imageItemView = [[NSScrubberImageItemView alloc] init];
             
             image_t image = JNIContext::CallImageMethod(env, javaScrubberView, "getImage");
-            if(!image.name.empty()) {
-                NSImage *nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
-                [imageItemView setImage:nsImage];
-            }
-            else if(!image.path.empty()) {
-                NSImage *nsImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:image.path.c_str()]];
+            NSImage *nsImage = [self getNSImage:image];
+            if(nsImage != nil) {
                 [imageItemView setImage:nsImage];
             }
             
@@ -395,6 +387,28 @@
     }
     
     return nil;
+}
+
+-(NSImage*) getNSImage:(image_t)image {
+    NSImage *nsImage = nil;
+    if(!image.name.empty()) {
+        nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
+    }
+    else if(!image.path.empty()) {
+        NSString *imageFilePath = [NSString stringWithUTF8String:image.path.c_str()];
+        if( [imageFilePath hasPrefix:@"file:"]) {
+            NSRange filePrefixRange = [imageFilePath rangeOfString:@"file:"];
+            imageFilePath = [imageFilePath stringByReplacingOccurrencesOfString:@"file:" withString:@"" options:0 range:filePrefixRange];
+        }
+        
+        nsImage = [[NSImage alloc] initWithContentsOfFile:imageFilePath];
+    }
+    else if(!image.data.empty()) {
+        NSData *nsData = [[NSData alloc] initWithBytes:image.data.data() length:image.data.size()];
+        nsImage = [[NSImage alloc] initWithData:nsData];
+    }
+    
+    return nsImage;
 }
 
 -(void) setJavaRepr:(jobject)javaRepr {

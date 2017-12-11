@@ -1,13 +1,24 @@
 package com.thizzer.jtouchbar.common;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class Image {
 	
 	private String _name;
-	
 	private String _path;
-
-	public Image() {}
 	
+	private byte[] _data;
+
+	@SuppressWarnings("unused")
+	private Image() {}
+	
+	/**
+	 * 
+	 * @param nameOrPath
+	 * @param isPath
+	 */
 	public Image(String nameOrPath, boolean isPath) {
 		if(isPath) {
 			_path = nameOrPath;
@@ -15,6 +26,51 @@ public class Image {
 		else {
 			_name = nameOrPath;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param data
+	 */
+	public Image(byte[] data) {
+		_data = data;
+	}
+	
+	/**
+	 * 
+	 * @param dataInputStream
+	 * @throws IOException
+	 */
+	public Image(InputStream dataInputStream) throws IOException {
+		readFromInputStream(dataInputStream);
+	}
+	
+	/**
+	 * 
+	 * @param dataInputStream
+	 * @throws IOException
+	 */
+	public void readFromInputStream(InputStream dataInputStream) throws IOException {
+		if(dataInputStream == null) {
+			throw new NullPointerException();
+		}
+		
+		try (ByteArrayOutputStream dataOutputStream = new ByteArrayOutputStream()) {
+			byte[] buffer = new byte[1024];
+
+	        int read = 0;
+	        while((read = dataInputStream.read(buffer)) != -1) {
+	        		dataOutputStream.write(buffer, 0, read);
+	        }
+	        
+	        _data = dataOutputStream.toByteArray();
+		}
+		catch(IOException e) {
+			throw e;
+		}
+		finally {
+			dataInputStream.close();
+		}  
 	}
 	
 	public String getName() {
@@ -31,5 +87,13 @@ public class Image {
 
 	public void setPath(String path) {
 		_path = path;
+	}
+	
+	public byte[] getData() {
+		return _data;
+	}
+
+	public void getData(byte[] data) {
+		_data = data;
 	}
 }
