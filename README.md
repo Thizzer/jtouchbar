@@ -9,7 +9,8 @@ Java library for using the touchbar API on supported macbooks.
 Please take a look at the other stuff the developers are working on and support them in other ways.
 
 * [ttveldhuis](https://github.com/ttveldhuis)
-  * Patreon Page - https://www.patreon.com/ttveldhuis
+  * Buy ttveldhuis a coffee - https://ko-fi.com/ttveldhuis
+  * Patreon Page - https://www.patreon.com/ttveldhuis  
   * Blog - https://www.thizzer.com
   
 ## Installation & Usage
