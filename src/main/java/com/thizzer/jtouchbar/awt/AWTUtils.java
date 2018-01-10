@@ -12,7 +12,7 @@ public class AWTUtils {
 		}
 		
 		try {
-	        return JTouchBarJNI.getAWTViewPointer0( component );
+	        return JTouchBarJNI.getAWTViewPointer0(component);
 		} 
 	    catch (Exception exception) {
 	    		throw new RuntimeException(exception);

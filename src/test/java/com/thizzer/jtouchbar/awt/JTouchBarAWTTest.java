@@ -14,11 +14,13 @@ import static org.junit.Assert.assertNotNull;
 
 import javax.swing.JFrame;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.thizzer.jtouchbar.JTouchBar;
 import com.thizzer.jtouchbar.JTouchBarTestUtils;
 
+@Ignore
 public class JTouchBarAWTTest {
 
 	@Test

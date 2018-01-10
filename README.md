@@ -51,6 +51,19 @@ jTouchBar.setCustomizationIdentifier("MyAWTJavaTouchBar");
 jTouchBar.show(frame);
 ```
 
+### Using JTouchBar with JavaFX
+
+```
+Stage stage = ...
+
+JTouchBar jTouchBar = new JTouchBar();
+jTouchBar.setCustomizationIdentifier("MyJavaFXJavaTouchBar");
+
+// Customize your touchbar
+
+jTouchBar.show(stage);
+```
+
 ### Adding views to your touchbar
 
 ```

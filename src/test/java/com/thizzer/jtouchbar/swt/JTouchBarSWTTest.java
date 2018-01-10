@@ -16,11 +16,13 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.thizzer.jtouchbar.JTouchBar;
 import com.thizzer.jtouchbar.JTouchBarTestUtils;
 
+@Ignore
 public class JTouchBarSWTTest {
 
 	@Before
