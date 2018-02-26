@@ -44,7 +44,7 @@ jTouchBar.show(shell);
 JFrame frame = ...
 
 JTouchBar jTouchBar = new JTouchBar();
-jTouchBar.setCustomizationIdentifier("MyAWTJavaTouchBar");
+jTouchBar.setCustomizationIdentifier("MySwingJavaTouchBar");
 
 // Customize your touchbar
 
