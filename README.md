@@ -25,7 +25,7 @@ Please take a look at the other stuff the developers are working on and support 
 </dependency>
 ```
 
-### Using JTouchBar with SWT
+### Using JTouchBar with Swing (SWT)
 
 ```
 Shell shell = ...
