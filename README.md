@@ -25,7 +25,7 @@ Please take a look at the other stuff the developers are working on and support 
 </dependency>
 ```
 
-### Using JTouchBar with Swing (SWT)
+### Using JTouchBar with SWT
 
 ```
 Shell shell = ...
@@ -38,7 +38,7 @@ jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
 jTouchBar.show(shell);
 ```
 
-### Using JTouchBar with AWT
+### Using JTouchBar with Swing
 
 ```
 JFrame frame = ...
