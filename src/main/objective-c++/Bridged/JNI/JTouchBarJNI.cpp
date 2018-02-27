@@ -18,27 +18,42 @@
 
 static NSMapTable<NSWindow*, JavaTouchBarResponder*> *windowMapping = [NSMapTable weakToStrongObjectsMapTable];
 
-JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIEnv *env, jclass cls, jlong viewPointer, jobject touchBar) {
-    void* nsViewPointer = (void*)viewPointer;
-    if(nsViewPointer == nullptr) {
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIEnv *env, jclass cls, jlong viewOrWindowPointerValue, jobject touchBar) {
+    if(viewOrWindowPointerValue == 0) {
         return;
     }
     
-    NSView *nsView = (__bridge NSView*) (nsViewPointer);
-    if(nsView == nil) {
+    void* viewOrWindowPointer = (void*) viewOrWindowPointerValue;
+    NSObject* nsObjectPointer = (__bridge NSObject*) viewOrWindowPointer;
+    if(nsObjectPointer == nil) {
+        return;
+    }
+
+    NSWindow *nsWindow = nil;
+    if([nsObjectPointer isKindOfClass:[NSView class]]) {
+        NSView *nsView = (NSView*) nsObjectPointer;
+        if(nsView == nil || ![nsView respondsToSelector:@selector(window)]) {
+            return;
+        }
+
+        nsWindow = nsView.window;
+    }
+    else if([nsObjectPointer isKindOfClass:[NSWindow class]]) {
+        nsWindow = (NSWindow*) nsObjectPointer;
+    }
+    else {
         return;
     }
     
-    NSWindow *nsWindow = nsView.window;
     if(nsWindow == nil) {
         return;
     }
-    
+
     JavaTouchBarResponder *jPreviousTouchBarResponder = [windowMapping objectForKey:nsWindow];
     if(jPreviousTouchBarResponder == nil && touchBar == nullptr) {
         return;
     }
-    
+
     if(touchBar == nullptr) {
         [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
         [windowMapping removeObjectForKey:nsWindow];
@@ -48,13 +63,13 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
             // ensure the old references get destroyed
             [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
         }
-        
+
         JavaTouchBarResponder *jTouchBarResponder = [[JavaTouchBarResponder alloc] init];
         [windowMapping setObject:jTouchBarResponder forKey:nsWindow];
-        
+
         JavaTouchBar *jTouchBar = [[JavaTouchBar alloc] init];
         jTouchBar.javaRepr = touchBar;
-        
+
         [jTouchBarResponder setTouchBar:jTouchBar window:nsWindow];
     }
 }

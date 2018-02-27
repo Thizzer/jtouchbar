@@ -64,6 +64,21 @@ jTouchBar.setCustomizationIdentifier("MyJavaFXJavaTouchBar");
 jTouchBar.show(stage);
 ```
 
+### Using JTouchBar with LWJGL
+
+```
+long window = ... // LWJGL window
+
+JTouchBar jTouchBar = new JTouchBar();
+jTouchBar.setCustomizationIdentifier("MyLWJGLJavaTouchBar");
+
+// Customize your touchbar
+
+jTouchBar.show(
+		GLFWNativeCocoa.glfwGetCocoaWindow(window)
+	);
+```
+
 ### Adding views to your touchbar
 
 ```

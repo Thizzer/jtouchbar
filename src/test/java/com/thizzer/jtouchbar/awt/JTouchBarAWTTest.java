@@ -11,20 +11,37 @@
 package com.thizzer.jtouchbar.awt;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.swing.JFrame;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.thizzer.jtouchbar.JTouchBar;
 import com.thizzer.jtouchbar.JTouchBarTestUtils;
 
-@Ignore
 public class JTouchBarAWTTest {
 
 	@Test
 	public void test() {
+		new Thread(new Runnable() {
+			
+			 @Override
+	         public void run() {
+				 testTouchBarAWT();
+			 }
+		})
+		.start();
+		
+		try {
+			Thread.sleep(1000);
+		} 
+        catch (InterruptedException ignored) {
+        	assertTrue(false);
+        }
+	}
+	
+	public void testTouchBarAWT() {
 		JTouchBar jTouchBar = JTouchBarTestUtils.constructTouchBar();
 		assertNotNull(jTouchBar);
 		

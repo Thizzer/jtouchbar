@@ -84,6 +84,10 @@ public class JTouchBar {
 		});
 	}
 	
+	public void show(long window) {
+		JTouchBarJNI.setTouchBar0(window, this);
+	}
+	
 	public void hide(Component c) {
 		if(c == null) {
 			return;
@@ -103,5 +107,9 @@ public class JTouchBar {
 	public void hide(Window window) {
 		long viewPointer = JavaFXUtils.getViewPointer(window);
 		JTouchBarJNI.setTouchBar0(viewPointer, null);
+	}
+	
+	public void hide(long window) {
+		JTouchBarJNI.setTouchBar0(window, null);
 	}
 }
