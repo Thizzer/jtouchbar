@@ -15,4 +15,8 @@ import com.thizzer.jtouchbar.item.view.TouchBarView;
 public interface TouchBarViewAction {
 
 	void onCall(TouchBarView view);
+
+	default boolean isEnabled() {
+		return true;
+	}
 }

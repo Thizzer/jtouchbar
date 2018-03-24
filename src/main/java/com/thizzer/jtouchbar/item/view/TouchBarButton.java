@@ -76,4 +76,14 @@ public class TouchBarButton extends TouchBarView {
 		
 		_action.onCall(this);
 	}
+
+	public boolean isEnabled() {
+		return _action == null || _action.isEnabled();
+	}
+
+	public void fireActionStateChanged() {
+		if (this._action != null) {
+			update();
+		}
+	}
 }

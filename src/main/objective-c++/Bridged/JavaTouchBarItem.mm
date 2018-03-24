@@ -202,6 +202,9 @@
             [button setImagePosition:(NSCellImagePosition)imagePosition];
         });
     }
+
+    bool enabled = JNIContext::CallBooleanMethod(env, jTouchBarView, "isEnabled");
+    [button setEnabled: enabled];
 }
 
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
