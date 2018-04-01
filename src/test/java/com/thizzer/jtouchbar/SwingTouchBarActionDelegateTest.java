@@ -2,19 +2,17 @@ package com.thizzer.jtouchbar;
 
 import com.thizzer.jtouchbar.item.view.TouchBarButton;
 import com.thizzer.jtouchbar.item.view.TouchBarView;
-import com.thizzer.jtouchbar.swing.SwingTouchBarActionWrapper;
+import com.thizzer.jtouchbar.swing.SwingTouchBarActionDelegate;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.awt.event.ActionEvent;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class SwingTouchBarActionWrapperTest {
+public class SwingTouchBarActionDelegateTest {
 	private static final long TIMEOUT_TIME = 3L;
 	private static final TimeUnit TIMEOUT_TIMEUNIT = TimeUnit.SECONDS;
 
@@ -22,14 +20,14 @@ public class SwingTouchBarActionWrapperTest {
 	public void testCreateNullAction() {
 		final TouchBarButton touchBarButtonMock = Mockito.mock(TouchBarButton.class);
 
-		new SwingTouchBarActionWrapper(null, touchBarButtonMock);
+		new SwingTouchBarActionDelegate(null, touchBarButtonMock);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testCreateNullButton() {
 		final Action actionMock = Mockito.mock(Action.class);
 
-		new SwingTouchBarActionWrapper(actionMock, null);
+		new SwingTouchBarActionDelegate(actionMock, null);
 	}
 
 	@Test
@@ -43,7 +41,7 @@ public class SwingTouchBarActionWrapperTest {
 			}
 		};
 
-		new SwingTouchBarActionWrapper(action, touchBarButtonMock);
+		new SwingTouchBarActionDelegate(action, touchBarButtonMock);
 
 		action.setEnabled(false);
 
@@ -61,10 +59,10 @@ public class SwingTouchBarActionWrapperTest {
 			}
 		};
 
-		final SwingTouchBarActionWrapper swingTouchBarActionWrapper =
-				new SwingTouchBarActionWrapper(action, touchBarButtonMock);
+		final SwingTouchBarActionDelegate swingTouchBarActionDelegate =
+				new SwingTouchBarActionDelegate(action, touchBarButtonMock);
 
-		swingTouchBarActionWrapper.destroy();
+		swingTouchBarActionDelegate.destroy();
 
 		action.setEnabled(false);
 
@@ -77,8 +75,8 @@ public class SwingTouchBarActionWrapperTest {
 		final TouchBarView touchBarViewMock = Mockito.mock(TouchBarView.class);
 		final Action actionMock = Mockito.mock(Action.class);
 
-		final SwingTouchBarActionWrapper swingTouchBarActionWrapper =
-				new SwingTouchBarActionWrapper(actionMock, touchBarButtonMock) {
+		final SwingTouchBarActionDelegate swingTouchBarActionDelegate =
+				new SwingTouchBarActionDelegate(actionMock, touchBarButtonMock) {
 					@Override
 					protected boolean isOnEDT() {
 						return true;
@@ -90,7 +88,7 @@ public class SwingTouchBarActionWrapperTest {
 					}
 				};
 
-		swingTouchBarActionWrapper.onCall(touchBarViewMock);
+		swingTouchBarActionDelegate.onCall(touchBarViewMock);
 
 		Mockito.verify(actionMock).actionPerformed(Mockito.any(ActionEvent.class));
 	}
@@ -106,15 +104,15 @@ public class SwingTouchBarActionWrapperTest {
 			}
 		};
 
-		final SwingTouchBarActionWrapper swingTouchBarActionWrapper =
-				new SwingTouchBarActionWrapper(action, touchBarButtonMock);
+		final SwingTouchBarActionDelegate swingTouchBarActionDelegate =
+				new SwingTouchBarActionDelegate(action, touchBarButtonMock);
 
 		action.setEnabled(false);
 
-		Assert.assertFalse(swingTouchBarActionWrapper.isEnabled());
+		Assert.assertFalse(swingTouchBarActionDelegate.isEnabled());
 
 		action.setEnabled(true);
 
-		Assert.assertTrue(swingTouchBarActionWrapper.isEnabled());
+		Assert.assertTrue(swingTouchBarActionDelegate.isEnabled());
 	}
 }

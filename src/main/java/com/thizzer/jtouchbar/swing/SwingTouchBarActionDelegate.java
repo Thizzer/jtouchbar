@@ -14,13 +14,13 @@ import java.util.Objects;
  * A class that wraps a {@link TouchBarViewAction} such that it knows when a {@link TouchBarButton} needs to be
  * enabled/disabled.
  */
-public class SwingTouchBarActionWrapper implements TouchBarViewAction {
+public class SwingTouchBarActionDelegate implements TouchBarViewAction {
 	private static final String PROPERTY_NAME_ENABLED = "enabled";
 
 	private final Action action;
 	private final PropertyChangeListener propertyChangeListener;
 
-	public SwingTouchBarActionWrapper(final Action action, final TouchBarButton touchBarButton) {
+	public SwingTouchBarActionDelegate(final Action action, final TouchBarButton touchBarButton) {
 		Objects.requireNonNull(action, "action");
 		Objects.requireNonNull(touchBarButton, "touchBarButton");
 
