@@ -43,6 +43,16 @@
     [self createOrUpdateView];
 }
 
+
+-(NSColor*) getNSColor:(color_t)color {
+    if(color.nsColorKey.empty()) {
+        return [NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha];
+    }
+    
+    NSString *nsColorKey = [NSString stringWithUTF8String:color.nsColorKey.c_str()];
+    return [NSColor valueForKey:nsColorKey];
+}
+
 -(NSTouchBarItem*) getTouchBarItem {
     if(_javaRepr == NULL) {
         return nil;
@@ -185,7 +195,7 @@
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBezelColor");
     dispatch_async(dispatch_get_main_queue(), ^{
-        [button setBezelColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+        [button setBezelColor:[self getNSColor:color]];
     });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
@@ -225,7 +235,7 @@
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
     dispatch_async(dispatch_get_main_queue(), ^{
-        [scrubber setBackgroundColor:[NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha]];
+        [scrubber setBackgroundColor:[self getNSColor:color]];
     });
     
     int overlayStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");

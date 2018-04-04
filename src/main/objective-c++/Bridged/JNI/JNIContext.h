@@ -19,6 +19,7 @@
 using namespace std;
 
 struct color_t {
+    std::string nsColorKey = "";
     float red, green, blue, alpha = 0.0f;
 };
 

@@ -334,6 +334,7 @@ color_t JNIContext::CallColorMethod(JNIEnv* env, jobject target, const std::stri
         return color;
     }
     
+    color.nsColorKey = JNIContext::CallStringMethod(env, javaColor, "getNsColorKey");
     color.red = JNIContext::CallFloatMethod(env, javaColor, "getRed");
     color.green = JNIContext::CallFloatMethod(env, javaColor, "getGreen");
     color.blue = JNIContext::CallFloatMethod(env, javaColor, "getBlue");
