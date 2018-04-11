@@ -56,6 +56,11 @@
         _touchBarItem.collapsedRepresentationLabel = [self getCollapsedRepresentationLabel:env reload:TRUE];
         _touchBarItem.collapsedRepresentationImage = [self getCollapsedRepresentationImage:env reload:TRUE];
         
+        jobject showsCloseButton = JNIContext::CallBooleanObjectMethod(env, self.javaRepr, "isShowsCloseButton");
+        if( showsCloseButton != nullptr ) {
+            _touchBarItem.showsCloseButton = JNIContext::CallBooleanMethod(env, showsCloseButton, "booleanValue");
+        }
+        
         if( popoverTouchBar != nullptr ) {
             _jPopoverTouchBar = [[JavaTouchBar alloc] init];
             [_jPopoverTouchBar setJavaRepr:popoverTouchBar];

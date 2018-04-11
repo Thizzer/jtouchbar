@@ -53,6 +53,7 @@ public:
     static std::vector<unsigned char> CallByteArrayMethod(JNIEnv* env, jobject target, const std::string& method);
         
     static bool CallBooleanMethod(JNIEnv* env, jobject target, const std::string& method);
+    static jobject CallBooleanObjectMethod(JNIEnv* env, jobject target, const std::string& method);
     
     static int32_t CallIntMethod(JNIEnv* env, jobject target, const std::string& method);
     static int32_t CallIntMethod(JNIEnv* env, jobject target, const std::string& method, const char* argsSig, ...);

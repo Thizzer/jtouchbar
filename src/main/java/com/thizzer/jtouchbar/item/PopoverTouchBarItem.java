@@ -22,6 +22,8 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	
 	private JTouchBar _popoverTouchBar;
 	private JTouchBar _pressAndHoldTouchBar;
+	
+	private Boolean _showsCloseButton;
 
 	public PopoverTouchBarItem( String identifier ) {
 		super( identifier );
@@ -33,6 +35,7 @@ public class PopoverTouchBarItem extends TouchBarItem {
 
 	public void setCollapsedRepresentation(TouchBarView collapsedRepresentation) {
 		_collapsedRepresentation = collapsedRepresentation;
+		update();
 	}
 
 	public Image getCollapsedRepresentationImage() {
@@ -41,6 +44,7 @@ public class PopoverTouchBarItem extends TouchBarItem {
 
 	public void setCollapsedRepresentationImage(Image collapsedRepresentationImage) {
 		_collapsedRepresentationImage = collapsedRepresentationImage;
+		update();
 	}
 
 	public String getCollapsedRepresentationLabel() {
@@ -49,6 +53,7 @@ public class PopoverTouchBarItem extends TouchBarItem {
 
 	public void setCollapsedRepresentationLabel(String collapsedRepresentationLabel) {
 		_collapsedRepresentationLabel = collapsedRepresentationLabel;
+		update();
 	}
 
 	public JTouchBar getPopoverTouchBar() {
@@ -57,6 +62,7 @@ public class PopoverTouchBarItem extends TouchBarItem {
 
 	public void setPopoverTouchBar(JTouchBar popoverTouchBar) {
 		_popoverTouchBar = popoverTouchBar;
+		update();
 	}
 
 	public JTouchBar getPressAndHoldTouchBar() {
@@ -65,5 +71,15 @@ public class PopoverTouchBarItem extends TouchBarItem {
 
 	public void setPressAndHoldTouchBar(JTouchBar pressAndHoldTouchBar) {
 		_pressAndHoldTouchBar = pressAndHoldTouchBar;
+		update();
+	}
+
+	public Boolean isShowsCloseButton() {
+		return _showsCloseButton;
+	}
+
+	public void setShowsCloseButton(Boolean showsCloseButton) {
+		_showsCloseButton = showsCloseButton;
+		update();
 	}
 }

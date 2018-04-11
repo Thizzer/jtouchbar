@@ -241,6 +241,17 @@ bool JNIContext::CallBooleanMethod(JNIEnv* env, jobject target, const std::strin
     return value;
 }
 
+jobject JNIContext::CallBooleanObjectMethod(JNIEnv* env, jobject target, const std::string& method) {
+    try {
+        return JNIContext::CallObjectMethod(env, target, method, "java/lang/Boolean");
+    }
+    catch(exception& e) {
+        // TODO log error
+    }
+    
+    return nullptr;
+}
+
 int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string& method) {
     int32_t value = 0;
     

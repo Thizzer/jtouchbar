@@ -97,7 +97,7 @@ public class TouchBarItem implements Observer {
 		update();
 	}
 	
-	private void update() {
+	protected void update() {
 		updateNativeInstance();
 	}
 	
