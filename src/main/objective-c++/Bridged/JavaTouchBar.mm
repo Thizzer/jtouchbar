@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2017 thizzer.com
+ * Copyright (c) 2018 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -10,8 +10,9 @@
  */
 #import "JavaTouchBar.h"
 
-#include <jni.h>
-#include "JNIContext.h"
+#import "JNIContext.h"
+#import "JavaGroupTouchBarItem.h"
+#import "JavaPopoverTouchBarItem.h"
 
 @interface JavaTouchBar() {
     NSString *_customizationIdentifier;
@@ -78,8 +79,13 @@
             JavaTouchBarItem *item = nil;
             
             jclass groupItemCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/GroupTouchBarItem");
+            jclass popoverItemCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/PopoverTouchBarItem");
             if(env->IsInstanceOf(touchBarItem, groupItemCls)) {
                 item = [[JavaGroupTouchBarItem alloc] init];
+                item.javaRepr = touchBarItem;
+            }
+            else if(env->IsInstanceOf(touchBarItem, popoverItemCls)) {
+                item = [[JavaPopoverTouchBarItem alloc] init];
                 item.javaRepr = touchBarItem;
             }
             else {
@@ -103,7 +109,7 @@
     return [self getTouchBarItems:env reload:FALSE];
 }
 
--(NSTouchBar*) createNSTouchBar {
+-(NSTouchBar*) createNSTouchBar NS_AVAILABLE_MAC(10_12_2) {
     if(_javaRepr == nullptr) {
         return nil;
     }

@@ -8,14 +8,15 @@
  *
  * @author  	M. ten Veldhuis
  */
-package com.thizzer.jtouchbar.item.view;
+#import <Foundation/Foundation.h>
 
-import java.util.Observable;
+#import "JavaTouchBarItem.h"
 
-public abstract class TouchBarView extends Observable {
-	
-	void update() {
-		setChanged();
-		notifyObservers();
-	}
-}
+#include <jni.h>
+
+NS_CLASS_AVAILABLE_MAC(10_12_2)
+@interface JavaPopoverTouchBarItem : JavaTouchBarItem <NSTouchBarDelegate>
+
+
+
+@end

@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2017 thizzer.com
+ * Copyright (c) 2018 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -16,6 +16,7 @@
 #include <string>
 
 #include "JNIContext.h"
+#include "JTouchBarUtils.h"
 
 #include "JavaTouchBar.h"
 
@@ -27,6 +28,8 @@
     NSView *_view;
 }
 
+-(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
+
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
 -(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView  NS_AVAILABLE_MAC(10_12_2);
@@ -34,23 +37,12 @@
 -(void) trigger:(id)target;
 -(void) sliderValueChanged:(id)target;
 
--(NSImage*) getNSImage:(image_t)image;
 @end
 
 @implementation JavaTouchBarItem
 
 -(void) update {
     [self createOrUpdateView];
-}
-
-
--(NSColor*) getNSColor:(color_t)color {
-    if(color.nsColorKey.empty()) {
-        return [NSColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alpha];
-    }
-    
-    NSString *nsColorKey = [NSString stringWithUTF8String:color.nsColorKey.c_str()];
-    return [NSColor valueForKey:nsColorKey];
 }
 
 -(NSTouchBarItem*) getTouchBarItem {
@@ -144,46 +136,57 @@
     return _view;
 }
 
--(NSView*) createOrUpdateView {
+-(void) createOrUpdateView {
     JNIEnv *env; JNIContext context(&env);
     
     jobject jTouchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    _view = [self createOrUpdateView:_view jTouchBarView:jTouchBarView];
+}
+
+-(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView {
+    if(jTouchBarView == nullptr) {
+        viewToCreateOrUpdate = nil;
+        return viewToCreateOrUpdate;
+    }
+    
+    JNIEnv *env; JNIContext context(&env);
     
     jclass buttonCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(jTouchBarView, buttonCls)) {
-        if( _view == nil || ![_view isKindOfClass:[NSButton class]]) {
-            _view = [NSButton buttonWithTitle:@"" target:self action:@selector(trigger:)];
+        if( viewToCreateOrUpdate == nil || ![viewToCreateOrUpdate isKindOfClass:[NSButton class]]) {
+            viewToCreateOrUpdate = [NSButton buttonWithTitle:@"" target:self action:@selector(trigger:)];
         }
-        [self updateButton:(NSButton*)_view env:env jTouchBarView:jTouchBarView];
+        [self updateButton:(NSButton*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
     
     jclass textFieldCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarTextField");
     if(env->IsInstanceOf(jTouchBarView, textFieldCls)) {
-        if( _view == nil || ![_view isKindOfClass:[NSTextField class]]) {
-            _view = [NSTextField labelWithString:@""];
+        if( viewToCreateOrUpdate == nil || ![viewToCreateOrUpdate isKindOfClass:[NSTextField class]]) {
+            viewToCreateOrUpdate = [NSTextField labelWithString:@""];
         }
-        [self updateTextField:(NSTextField*)_view env:env jTouchBarView:jTouchBarView];
+        [self updateTextField:(NSTextField*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(jTouchBarView, scrubberCls)) {
-        if( _view == nil || ![_view isKindOfClass:[NSScrubber class]]) {
-            _view = [[NSScrubber alloc] init];
+        if( viewToCreateOrUpdate == nil || ![viewToCreateOrUpdate isKindOfClass:[NSScrubber class]]) {
+            viewToCreateOrUpdate = [[NSScrubber alloc] init];
         }
         
-        [self updateScrubber:(NSScrubber*)_view env:env jTouchBarView:jTouchBarView];
+        [self updateScrubber:(NSScrubber*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
     
     jclass sliderCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarSlider");
     if(env->IsInstanceOf(jTouchBarView, sliderCls)) {
-        if( _view == nil || ![_view isKindOfClass:[NSSlider class]]) {
-            _view = [NSSlider sliderWithTarget:self action:@selector(sliderValueChanged:)];
+        if( viewToCreateOrUpdate == nil || ![viewToCreateOrUpdate isKindOfClass:[NSSlider class]]) {
+            viewToCreateOrUpdate = [NSSlider sliderWithTarget:self action:@selector(sliderValueChanged:)];
         }
         
-        [self updateSlider:(NSSlider*)_view env:env jTouchBarView:jTouchBarView];
+        [self updateSlider:(NSSlider*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
     
-    return _view;
+    
+    return viewToCreateOrUpdate;
 }
 
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
@@ -195,11 +198,11 @@
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBezelColor");
     dispatch_async(dispatch_get_main_queue(), ^{
-        [button setBezelColor:[self getNSColor:color]];
+        [button setBezelColor:[JTouchBarUtils getNSColor:color]];
     });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
-    NSImage *nsImage = [self getNSImage:image];
+    NSImage *nsImage = [JTouchBarUtils getNSImage:image];
     if(nsImage != nil) {
        dispatch_async(dispatch_get_main_queue(), ^{
            [button setImage:nsImage];
@@ -235,7 +238,7 @@
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBackgroundColor");
     dispatch_async(dispatch_get_main_queue(), ^{
-        [scrubber setBackgroundColor:[self getNSColor:color]];
+        [scrubber setBackgroundColor:[JTouchBarUtils getNSColor:color]];
     });
     
     int overlayStyle = JNIContext::CallIntMethod(env, jTouchBarView, "getSelectionOverlayStyle");
@@ -387,7 +390,7 @@
             NSScrubberImageItemView *imageItemView = [[NSScrubberImageItemView alloc] init];
             
             image_t image = JNIContext::CallImageMethod(env, javaScrubberView, "getImage");
-            NSImage *nsImage = [self getNSImage:image];
+            NSImage *nsImage = [JTouchBarUtils getNSImage:image];
             if(nsImage != nil) {
                 [imageItemView setImage:nsImage];
             }
@@ -400,28 +403,6 @@
     }
     
     return nil;
-}
-
--(NSImage*) getNSImage:(image_t)image {
-    NSImage *nsImage = nil;
-    if(!image.name.empty()) {
-        nsImage = [NSImage imageNamed:[NSString stringWithUTF8String:image.name.c_str()]];
-    }
-    else if(!image.path.empty()) {
-        NSString *imageFilePath = [NSString stringWithUTF8String:image.path.c_str()];
-        if( [imageFilePath hasPrefix:@"file:"]) {
-            NSRange filePrefixRange = [imageFilePath rangeOfString:@"file:"];
-            imageFilePath = [imageFilePath stringByReplacingOccurrencesOfString:@"file:" withString:@"" options:0 range:filePrefixRange];
-        }
-        
-        nsImage = [[NSImage alloc] initWithContentsOfFile:imageFilePath];
-    }
-    else if(!image.data.empty()) {
-        NSData *nsData = [[NSData alloc] initWithBytes:image.data.data() length:image.data.size()];
-        nsImage = [[NSImage alloc] initWithData:nsData];
-    }
-    
-    return nsImage;
 }
 
 -(void) setJavaRepr:(jobject)javaRepr {

@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2017 thizzer.com
+ * Copyright (c) 2018 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -9,6 +9,8 @@
  * @author  	M. ten Veldhuis
  */
 #import "JavaTouchBarResponder.h"
+
+#import "JTouchBarUtils.h"
 
 @implementation JavaTouchBarResponder
 
@@ -49,14 +51,7 @@
 }
 
 -(NSTouchBarItem *) touchBar:(NSTouchBar *)touchBar makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier {
-    for(JavaTouchBarItem *item in [self.jTouchBar getTouchBarItems]) {
-        NSString *itemIdentifier = [item getIdentifier];
-        if( [itemIdentifier isEqualToString:identifier]) {
-            return [item getTouchBarItem];
-        }
-    }
-    
-    return nil;
+    return [JTouchBarUtils touchBar:touchBar makeItemForIdentifier:identifier usingJavaTouchBar:_jTouchBar];
 }
 
 @end

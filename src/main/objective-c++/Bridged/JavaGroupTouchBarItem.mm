@@ -1,26 +1,27 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2017 thizzer.com
+ * Copyright (c) 2018 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
  *
  * @author  	M. ten Veldhuis
  */
-#import "JavaTouchBarItem.h"
-
-#include <Cocoa/Cocoa.h>
+#import "JavaGroupTouchBarItem.h"
 
 #include <jni.h>
 #include <string>
 
-#include "JNIContext.h"
+#include <Cocoa/Cocoa.h>
 
-#include "JavaTouchBar.h"
+#import "JNIContext.h"
+#import "JTouchBarUtils.h"
+
+#import "JavaTouchBar.h"
 
 @interface JavaGroupTouchBarItem() {
-    NSTouchBarItem *_touchBarItem;
+    NSGroupTouchBarItem *_touchBarItem;
     
     JavaTouchBar *_jTouchBar;
     NSTouchBar *_groupTouchBar;
@@ -54,14 +55,7 @@
 }
 
 -(NSTouchBarItem *)touchBar:(NSTouchBar *)touchBar makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier {
-    for(JavaTouchBarItem *item in [_jTouchBar getTouchBarItems]) {
-        NSString *itemIdentifier = [item getIdentifier];
-        if( [itemIdentifier isEqualToString:identifier]) {
-            return [item getTouchBarItem];
-        }
-    }
-    
-    return nil;
+    return [JTouchBarUtils touchBar:touchBar makeItemForIdentifier:identifier usingJavaTouchBar:_jTouchBar];
 }
 
 @end

@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2017 thizzer.com
+ * Copyright (c) 2018 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -15,7 +15,7 @@ public class ImageName {
 	/**
 	 * Naming for the following 4 variables is probably under Apple's copyright
 	 * 
-	 * Copyright (c) 2015-2017, Apple Inc.
+	 * Copyright (c) 2015-2018, Apple Inc.
      * All rights reserved.
 	 */
 	public static final String NSImageNameTouchBarAddDetailTemplate = "NSTouchBarAddDetailTemplate";
