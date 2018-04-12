@@ -12,6 +12,7 @@
 
 #import "JavaTouchBarItem.h"
 
+NS_CLASS_AVAILABLE_MAC(10_12_2)
 @interface JavaTouchBar : NSObject
 
 @property (nonatomic) jobject javaRepr;
