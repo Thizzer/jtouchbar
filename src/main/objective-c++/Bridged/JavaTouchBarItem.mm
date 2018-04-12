@@ -54,8 +54,6 @@
     
     NSString *identifier = [self getIdentifier:env reload:TRUE];
     
-    JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
-    
     NSCustomTouchBarItem *item = [[NSCustomTouchBarItem alloc] initWithIdentifier:identifier];
     item.customizationLabel = [self getCustomizationLabel:env reload:TRUE];
     item.view = [self getView];
@@ -412,6 +410,7 @@
     }
     
     _javaRepr = env->NewGlobalRef(javaRepr);
+    JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
 }
 
 -(void)dealloc {

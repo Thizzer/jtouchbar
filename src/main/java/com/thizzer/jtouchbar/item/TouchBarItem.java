@@ -107,6 +107,10 @@ public class TouchBarItem implements Observer {
 	
 	private long _nativeInstancePointer = 0L;
 	
+	protected long getNativeInstancePointer() {
+		return _nativeInstancePointer;
+	}
+	
 	void setNativeInstancePointer(long nativeInstancePointer) {
 		_nativeInstancePointer = nativeInstancePointer;
 	}

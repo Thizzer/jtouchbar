@@ -88,6 +88,31 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarIte
     [touchBarItem update];
 }
 
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callTouchBarItemSelector(JNIEnv *env, jclass cls, jlong itemPointer, jstring javaSelector) {
+    void* cItemPointer = (void*)itemPointer;
+    if(cItemPointer == nullptr) {
+        return;
+    }
+    
+    JavaTouchBarItem *touchBarItem = (__bridge JavaTouchBarItem*) (cItemPointer);
+    if(touchBarItem == nil) {
+        return;
+    }
+    
+    const char *charSelectorValue = env->GetStringUTFChars(javaSelector, 0);
+    if(charSelectorValue == nullptr) {
+        return;
+    }
+    
+    NSString *selectorStr = [NSString stringWithUTF8String:charSelectorValue];
+    env->ReleaseStringUTFChars(javaSelector, charSelectorValue);
+    
+    SEL selector = NSSelectorFromString(selectorStr);
+    if(selectorStr != nil && [touchBarItem respondsToSelector:selector]) {
+        [touchBarItem performSelector:selector];
+    }
+}
+
 JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getJavaFXViewPointer0(JNIEnv *env, jclass cls, jobject component) {
     jclass componentClass = env->GetObjectClass(component);
     jfieldID peerField = env->GetFieldID(componentClass, "impl_peer", "Lcom/sun/javafx/tk/TKStage;");

@@ -11,6 +11,7 @@
 package com.thizzer.jtouchbar.item;
 
 import com.thizzer.jtouchbar.JTouchBar;
+import com.thizzer.jtouchbar.JTouchBarJNI;
 import com.thizzer.jtouchbar.common.Image;
 import com.thizzer.jtouchbar.item.view.TouchBarView;
 
@@ -72,6 +73,14 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	public void setPressAndHoldTouchBar(JTouchBar pressAndHoldTouchBar) {
 		_pressAndHoldTouchBar = pressAndHoldTouchBar;
 		update();
+	}
+	
+	public void showPopover() {
+		JTouchBarJNI.callTouchBarItemSelector(getNativeInstancePointer(), "showPopover");
+	}
+	
+	public void dismissPopover() {
+		JTouchBarJNI.callTouchBarItemSelector(getNativeInstancePointer(), "dismissPopover");
 	}
 
 	public Boolean isShowsCloseButton() {

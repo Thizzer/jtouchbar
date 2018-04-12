@@ -57,11 +57,11 @@
         _touchBarItem.collapsedRepresentationImage = [self getCollapsedRepresentationImage:env reload:TRUE];
         
         jobject showsCloseButton = JNIContext::CallBooleanObjectMethod(env, self.javaRepr, "isShowsCloseButton");
-        if( showsCloseButton != nullptr ) {
+        if(showsCloseButton != nullptr) {
             _touchBarItem.showsCloseButton = JNIContext::CallBooleanMethod(env, showsCloseButton, "booleanValue");
         }
         
-        if( popoverTouchBar != nullptr ) {
+        if(popoverTouchBar != nullptr) {
             _jPopoverTouchBar = [[JavaTouchBar alloc] init];
             [_jPopoverTouchBar setJavaRepr:popoverTouchBar];
             
@@ -69,16 +69,36 @@
             _touchBarItem.popoverTouchBar.delegate = self;
         }
         
-        if( pressAndHoldTouchBar != nullptr ) {
+        if(pressAndHoldTouchBar != nullptr) {
             _jPressAndHoldTouchBar = [[JavaTouchBar alloc] init];
             [_jPressAndHoldTouchBar setJavaRepr:pressAndHoldTouchBar];
             
             _touchBarItem.pressAndHoldTouchBar = [_jPressAndHoldTouchBar createNSTouchBar];
             _touchBarItem.pressAndHoldTouchBar.delegate = self;
+            
+            
         }
     }
     
     return _touchBarItem;
+}
+
+-(void) showPopover
+{
+    if(_touchBarItem == nil) {
+        return;
+    }
+    
+    [_touchBarItem showPopover:nil];
+}
+
+-(void) dismissPopover
+{
+    if(_touchBarItem == nil) {
+        return;
+    }
+    
+    [_touchBarItem dismissPopover:nil];
 }
 
 -(NSString*) getCollapsedRepresentationLabel:(JNIEnv*)env reload:(BOOL)reload {
