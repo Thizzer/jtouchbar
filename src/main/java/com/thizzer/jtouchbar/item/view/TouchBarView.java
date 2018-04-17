@@ -10,10 +10,10 @@
  */
 package com.thizzer.jtouchbar.item.view;
 
-import java.util.Observable;
+import com.thizzer.jtouchbar.NativeLinkObject;
 
-public abstract class TouchBarView extends Observable {
-	
+public abstract class TouchBarView extends NativeLinkObject {
+		
 	void update() {
 		setChanged();
 		notifyObservers();

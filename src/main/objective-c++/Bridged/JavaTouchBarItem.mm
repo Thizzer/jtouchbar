@@ -407,10 +407,13 @@
     JNIEnv *env; JNIContext context(&env);
     if(_javaRepr != NULL) {
         env->DeleteGlobalRef(_javaRepr);
+        
+        _javaRepr = env->NewGlobalRef(javaRepr);
+        JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
     }
-    
-    _javaRepr = env->NewGlobalRef(javaRepr);
-    JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
+    else {
+        _javaRepr = NULL;
+    }
 }
 
 -(void)dealloc {

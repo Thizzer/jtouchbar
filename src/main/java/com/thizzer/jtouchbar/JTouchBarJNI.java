@@ -33,7 +33,7 @@ public class JTouchBarJNI {
 	
 	public static native void updateTouchBarItem(long nativeInstancePointer);
 	
-	public static native void callTouchBarItemSelector(long nativeInstancePointer, String selector);
+	public static native void callObjectSelector(long nativeInstancePointer, String selector);
 	
 	public static native long getJavaFXViewPointer0(Window w);
 	

@@ -14,9 +14,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.thizzer.jtouchbar.JTouchBarJNI;
+import com.thizzer.jtouchbar.NativeLinkObject;
 import com.thizzer.jtouchbar.item.view.TouchBarView;
 
-public class TouchBarItem implements Observer {
+public class TouchBarItem extends NativeLinkObject implements Observer {
 	
 	/**
 	 * Naming for the following 4 variables is probably under Apple's copyright
@@ -100,28 +101,12 @@ public class TouchBarItem implements Observer {
 	protected void update() {
 		updateNativeInstance();
 	}
-	
-	/**
-	 * 
-	 */
-	
-	private long _nativeInstancePointer = 0L;
-	
-	protected long getNativeInstancePointer() {
-		return _nativeInstancePointer;
-	}
-	
-	void setNativeInstancePointer(long nativeInstancePointer) {
-		_nativeInstancePointer = nativeInstancePointer;
-	}
-	
+		
 	private void updateNativeInstance() {
-		if(_nativeInstancePointer == 0) {
+		if(getNativeInstancePointer() == 0) {
 			return;
 		}
 		
-		JTouchBarJNI.updateTouchBarItem(_nativeInstancePointer);
+		JTouchBarJNI.updateTouchBarItem(getNativeInstancePointer());
 	}
-
-	
 }

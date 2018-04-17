@@ -152,12 +152,15 @@
     JNIEnv *env; JNIContext context(&env);
     if(_javaRepr != NULL) {
         env->DeleteGlobalRef(_javaRepr);
+        
+        _javaRepr = env->NewGlobalRef(javaRepr);
     }
-    
-    _javaRepr = env->NewGlobalRef(javaRepr);
+    else {
+        _javaRepr = NULL;
+    }
 }
 
--(void)dealloc {
+-(void) dealloc {
     [self setJavaRepr:NULL];
 }
 

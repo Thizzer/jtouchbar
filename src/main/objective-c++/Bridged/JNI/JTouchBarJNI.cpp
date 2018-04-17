@@ -88,13 +88,13 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarIte
     [touchBarItem update];
 }
 
-JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callTouchBarItemSelector(JNIEnv *env, jclass cls, jlong itemPointer, jstring javaSelector) {
-    void* cItemPointer = (void*)itemPointer;
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelector(JNIEnv *env, jclass cls, jlong objectPointer, jstring javaSelector) {
+    void* cItemPointer = (void*)objectPointer;
     if(cItemPointer == nullptr) {
         return;
     }
     
-    JavaTouchBarItem *touchBarItem = (__bridge JavaTouchBarItem*) (cItemPointer);
+    NSObject *touchBarItem = (__bridge NSObject*) (cItemPointer);
     if(touchBarItem == nil) {
         return;
     }
