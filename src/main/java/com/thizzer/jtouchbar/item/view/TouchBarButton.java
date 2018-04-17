@@ -18,7 +18,7 @@ public class TouchBarButton extends TouchBarView {
 	private String _title;
 	
 	private Image _image;
-	private int _imagePosition;
+	private int _imagePosition = ImagePosition.OVERLAPS;
 	
 	private Color _bezelColor;
 	

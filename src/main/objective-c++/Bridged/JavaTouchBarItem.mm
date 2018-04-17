@@ -200,22 +200,18 @@
     });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
+    int imagePosition = JNIContext::CallIntMethod(env, jTouchBarView, "getImagePosition");
+    
     NSImage *nsImage = [JTouchBarUtils getNSImage:image];
     if(nsImage != nil) {
        dispatch_async(dispatch_get_main_queue(), ^{
            [button setImage:nsImage];
+           [button setImagePosition:(NSCellImagePosition)imagePosition];
        });
     }
-        
-    if(button.image != nil) {
-        int imagePosition = JNIContext::CallIntMethod(env, jTouchBarView, "getImagePosition");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [button setImagePosition:(NSCellImagePosition)imagePosition];
-        });
-    }
-
+    
     bool enabled = JNIContext::CallBooleanMethod(env, jTouchBarView, "isEnabled");
-    [button setEnabled: enabled];
+    [button setEnabled:enabled];
 }
 
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
