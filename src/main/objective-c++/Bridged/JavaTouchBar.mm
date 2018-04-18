@@ -65,50 +65,56 @@
 }
 
 -(NSArray<JavaTouchBarItem*>*) getTouchBarItems:(JNIEnv*)env reload:(BOOL)reload {
-    if(_jTouchBarItems == nil || [_jTouchBarItems count] == 0 || reload) {
-        _jTouchBarItems = [[NSMutableArray alloc] init]; // reinitialize
-        
-        jobject touchBarItems = JNIContext::CallObjectMethod(env, _javaRepr, "getItems", "java/util/List");
-        if(touchBarItems == nullptr) {
-            return _jTouchBarItems;
-        }
-        
-        jobject touchBarItemIterator = JNIContext::CallObjectMethod(env, touchBarItems, "iterator", "java/util/Iterator");
-        if(touchBarItems == nullptr) {
-            return _jTouchBarItems;
-        }
-        
-        jmethodID nextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "next", "()Ljava/lang/Object;");
-        jmethodID hasNextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "hasNext", "()Z");
-        
-        while (env->CallBooleanMethod(touchBarItemIterator, hasNextMid)) {
-            jobject touchBarItem = env->CallObjectMethod(touchBarItemIterator, nextMid);
-            if(touchBarItem == nullptr) {
-                continue;
+    @synchronized(_jTouchBarItems) {
+        if(_jTouchBarItems == nil || [_jTouchBarItems count] == 0 || reload) {
+            _jTouchBarItems = [[NSMutableArray alloc] init]; // reinitialize
+            
+            jobject touchBarItems = JNIContext::CallObjectMethod(env, _javaRepr, "getItems", "java/util/List");
+            if(touchBarItems == nullptr) {
+                return _jTouchBarItems;
             }
-            
-            JavaTouchBarItem *item = nil;
-            
+
+            jobject touchBarItemIterator = JNIContext::CallObjectMethod(env, touchBarItems, "iterator", "java/util/Iterator");
+            if(touchBarItems == nullptr) {
+                return _jTouchBarItems;
+            }
+
+            jmethodID nextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "next", "()Ljava/lang/Object;");
+            jmethodID hasNextMid = env->GetMethodID(env->GetObjectClass(touchBarItemIterator), "hasNext", "()Z");
+
             jclass groupItemCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/GroupTouchBarItem");
-            if(groupItemCls != nullptr && env->IsInstanceOf(touchBarItem, groupItemCls)) {
-                item = [[JavaGroupTouchBarItem alloc] init];
-            }
-            
             jclass popoverItemCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/PopoverTouchBarItem");
-            if(popoverItemCls != nullptr && env->IsInstanceOf(touchBarItem, popoverItemCls)) {
-                item = [[JavaPopoverTouchBarItem alloc] init];
-            }
             
-            if(item == nil) {
-                item = [[JavaTouchBarItem alloc] init];
+            while (env->CallBooleanMethod(touchBarItemIterator, hasNextMid)) {
+                if(touchBarItemIterator == nullptr) {
+                    break;
+                }
+                
+                jobject touchBarItem = env->CallObjectMethod(touchBarItemIterator, nextMid);
+                if(touchBarItem == nullptr) {
+                    continue;
+                }
+
+                JavaTouchBarItem *item = nil;
+
+                if(groupItemCls != nullptr && env->IsInstanceOf(touchBarItem, groupItemCls)) {
+                    item = [[JavaGroupTouchBarItem alloc] init];
+                }
+                else if(popoverItemCls != nullptr && env->IsInstanceOf(touchBarItem, popoverItemCls)) {
+                    item = [[JavaPopoverTouchBarItem alloc] init];
+                }
+
+                if(item == nil) {
+                    item = [[JavaTouchBarItem alloc] init];
+                }
+
+                item.javaRepr = touchBarItem;
+                [((NSMutableArray*)_jTouchBarItems) addObject:item];
             }
-            
-            item.javaRepr = touchBarItem;
-            [((NSMutableArray*)_jTouchBarItems) addObject:item];
         }
+        
+        return _jTouchBarItems;
     }
-    
-    return _jTouchBarItems;
 }
 
 -(NSArray<JavaTouchBarItem*>*) getTouchBarItems {

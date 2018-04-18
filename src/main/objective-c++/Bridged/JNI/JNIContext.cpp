@@ -93,6 +93,9 @@ jclass JNIContext::GetOrFindClass(JNIEnv* env, std::string classname) {
 
 jobject JNIContext::CallObjectMethod( JNIEnv* env, jobject target, const std::string& method, const char* cls ) {
     jobject value = nullptr;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         std::string signature = "()L" + std::string(cls) + ";";
@@ -104,6 +107,7 @@ jobject JNIContext::CallObjectMethod( JNIEnv* env, jobject target, const std::st
         }
         
         value = env->CallObjectMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -114,6 +118,9 @@ jobject JNIContext::CallObjectMethod( JNIEnv* env, jobject target, const std::st
 
 jobject JNIContext::CallObjectMethod(JNIEnv* env, jobject target, const std::string& method, const char* cls, const char* argsSig, ...) {
     jobject value = nullptr;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         std::string signature = "("+ std::string(argsSig) +")L" + std::string(cls) + ";";
@@ -128,6 +135,8 @@ jobject JNIContext::CallObjectMethod(JNIEnv* env, jobject target, const std::str
         va_start(args, argsSig);
         value = env->CallObjectMethodV(target, methodId, args);
         va_end(args);
+        
+        HandleExceptions(env);
     }
     catch( exception& e) {
         // TODO log error
@@ -137,6 +146,10 @@ jobject JNIContext::CallObjectMethod(JNIEnv* env, jobject target, const std::str
 }
 
 void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& method) {
+    if(target == nullptr) {
+        return;
+    }
+    
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()V");
@@ -145,6 +158,7 @@ void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& 
         }
         
         env->CallVoidMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -152,6 +166,10 @@ void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& 
 }
 
 void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& method, const char* argsSig, ...) {
+    if(target == nullptr) {
+        return;
+    }
+    
     try {
         std::string signature = "("+ std::string(argsSig) +")V";
         
@@ -165,6 +183,8 @@ void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& 
         va_start(args, argsSig);
         env->CallVoidMethodV(target, methodId, args);
         va_end(args);
+        
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -173,6 +193,9 @@ void JNIContext::CallVoidMethod(JNIEnv* env, jobject target, const std::string& 
 
 std::string JNIContext::CallStringMethod(JNIEnv* env, jobject target, const std::string& method) {
     std::string value = "";
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jstring javaStringValue = (jstring) JNIContext::CallObjectMethod(env, target, method, "java/lang/String");
@@ -196,6 +219,9 @@ std::string JNIContext::CallStringMethod(JNIEnv* env, jobject target, const std:
 
 std::vector<unsigned char> JNIContext::CallByteArrayMethod(JNIEnv* env, jobject target, const std::string& method) {
     std::vector<unsigned char> value;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         std::string signature = "()[B";
@@ -207,6 +233,8 @@ std::vector<unsigned char> JNIContext::CallByteArrayMethod(JNIEnv* env, jobject 
         }
         
         jbyteArray bytes = (jbyteArray) env->CallObjectMethod(target, methodId);
+        HandleExceptions(env);
+        
         if(bytes == nullptr) {
             return value;
         }
@@ -227,12 +255,16 @@ std::vector<unsigned char> JNIContext::CallByteArrayMethod(JNIEnv* env, jobject 
 
 bool JNIContext::CallBooleanMethod(JNIEnv* env, jobject target, const std::string& method) {
     bool value = false;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()Z");
         
         value = env->CallBooleanMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -242,6 +274,10 @@ bool JNIContext::CallBooleanMethod(JNIEnv* env, jobject target, const std::strin
 }
 
 jobject JNIContext::CallBooleanObjectMethod(JNIEnv* env, jobject target, const std::string& method) {
+    if(target == nullptr) {
+        return nullptr;
+    }
+    
     try {
         return JNIContext::CallObjectMethod(env, target, method, "java/lang/Boolean");
     }
@@ -254,12 +290,16 @@ jobject JNIContext::CallBooleanObjectMethod(JNIEnv* env, jobject target, const s
 
 int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string& method) {
     int32_t value = 0;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()I");
         
         value = env->CallIntMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -270,6 +310,9 @@ int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string
 
 int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string& method, const char* argsSig, ...) {
     int32_t value = 0;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         std::string signature = "("+ std::string(argsSig) +")I";
@@ -281,6 +324,8 @@ int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string
         va_start(args, argsSig);
         value = env->CallIntMethodV(target, methodId, args);
         va_end(args);
+        
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -291,12 +336,16 @@ int32_t JNIContext::CallIntMethod(JNIEnv* env, jobject target, const std::string
 
 float JNIContext::CallFloatMethod(JNIEnv* env, jobject target, const std::string& method) {
     float value = 0;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()F");
         
         value = env->CallFloatMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -307,12 +356,16 @@ float JNIContext::CallFloatMethod(JNIEnv* env, jobject target, const std::string
 
 double JNIContext::CallDoubleMethod(JNIEnv* env, jobject target, const std::string& method) {
     double value = 0.0;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()D");
         
         value = env->CallDoubleMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -323,12 +376,16 @@ double JNIContext::CallDoubleMethod(JNIEnv* env, jobject target, const std::stri
 
 long JNIContext::CallLongMethod(JNIEnv* env, jobject target, const std::string& method) {
     long value = 0L;
+    if(target == nullptr) {
+        return value;
+    }
     
     try {
         jclass targetCls = env->GetObjectClass(target);
         jmethodID methodId = env->GetMethodID(targetCls, method.c_str(), "()J");
         
         value = env->CallLongMethod(target, methodId);
+        HandleExceptions(env);
     }
     catch(exception& e) {
         // TODO log error
@@ -339,6 +396,9 @@ long JNIContext::CallLongMethod(JNIEnv* env, jobject target, const std::string& 
 
 color_t JNIContext::CallColorMethod(JNIEnv* env, jobject target, const std::string& method) {
     color_t color;
+    if(target == nullptr) {
+        return color;
+    }
     
     jobject javaColor = JNIContext::CallObjectMethod(env, target, method, "com/thizzer/jtouchbar/common/Color");
     if(javaColor == nullptr) {
@@ -356,6 +416,9 @@ color_t JNIContext::CallColorMethod(JNIEnv* env, jobject target, const std::stri
 
 image_t JNIContext::CallImageMethod(JNIEnv* env, jobject target, const std::string& method) {
     image_t image;
+    if(target == nullptr) {
+        return image;
+    }
     
     jobject javaImage = JNIContext::CallObjectMethod(env, target, method, "com/thizzer/jtouchbar/common/Image");
     if(javaImage == nullptr) {
@@ -367,4 +430,15 @@ image_t JNIContext::CallImageMethod(JNIEnv* env, jobject target, const std::stri
     image.data = JNIContext::CallByteArrayMethod(env, javaImage, "getData");
         
     return image;
+}
+
+void JNIContext::HandleExceptions(JNIEnv* env) {
+    if(env == nullptr) {
+        return;
+    }
+    
+    if(env->ExceptionCheck()) {
+        // TODO actually handle the exception
+        env->ExceptionClear();
+    }
 }

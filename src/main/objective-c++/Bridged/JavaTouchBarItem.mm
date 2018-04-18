@@ -135,10 +135,12 @@
 }
 
 -(void) createOrUpdateView {
-    JNIEnv *env; JNIContext context(&env);
-    
-    jobject jTouchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
-    _view = [self createOrUpdateView:_view jTouchBarView:jTouchBarView];
+    @synchronized(_view) {
+        JNIEnv *env; JNIContext context(&env);
+
+        jobject jTouchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+        _view = [self createOrUpdateView:_view jTouchBarView:jTouchBarView];
+    }
 }
 
 -(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView {
@@ -182,7 +184,6 @@
         
         [self updateSlider:(NSSlider*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
-    
     
     return viewToCreateOrUpdate;
 }

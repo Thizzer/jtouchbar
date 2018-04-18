@@ -66,6 +66,8 @@ public:
     
     static color_t CallColorMethod(JNIEnv* env, jobject target, const std::string& method);
     static image_t CallImageMethod(JNIEnv* env, jobject target, const std::string& method);
+    
+    static void HandleExceptions(JNIEnv* env);
 };
 
 #endif // JNICONTEXT_H

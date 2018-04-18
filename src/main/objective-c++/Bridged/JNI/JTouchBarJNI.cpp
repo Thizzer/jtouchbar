@@ -10,8 +10,8 @@
  */
 #include "JTouchBarJNI.h"
 
-#include <Cocoa/Cocoa.h>
-#include <JavaVM/JavaVM.h>
+#import <Cocoa/Cocoa.h>
+#import <JavaVM/JavaVM.h>
 
 #include "JNIContext.h"
 #include "JavaTouchBarResponder.h"
@@ -60,8 +60,9 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
     }
     else {
         if(jPreviousTouchBarResponder != nil) {
-            // ensure the old references get destroyed
+            // ensure any old references get destroyed
             [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
+            [windowMapping removeObjectForKey:nsWindow];
         }
 
         JavaTouchBarResponder *jTouchBarResponder = [[JavaTouchBarResponder alloc] init];
@@ -93,20 +94,20 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
     if(cItemPointer == nullptr) {
         return;
     }
-    
+
     NSObject *touchBarItem = (__bridge NSObject*) (cItemPointer);
     if(touchBarItem == nil) {
         return;
     }
-    
+
     const char *charSelectorValue = env->GetStringUTFChars(javaSelector, 0);
     if(charSelectorValue == nullptr) {
         return;
     }
-    
+
     NSString *selectorStr = [NSString stringWithUTF8String:charSelectorValue];
     env->ReleaseStringUTFChars(javaSelector, charSelectorValue);
-    
+
     SEL selector = NSSelectorFromString(selectorStr);
     if(selectorStr != nil && [touchBarItem respondsToSelector:selector]) {
         [touchBarItem performSelector:selector];
