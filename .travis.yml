@@ -16,12 +16,20 @@ script:
   - mvn -B clean install -f pom.xml
 
 deploy:
-  provider: script
-  script: "sh $TRAVIS_BUILD_DIR/.travis-staging.sh"
-  skip_cleanup: true
-  on:
-    branch: master
-    tags: true
+  # deploy master to staging
+  - provider: script
+    script: "sh $TRAVIS_BUILD_DIR/.travis-staging.sh"
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
+  # deploy development to snapshot
+  - provider: script
+    script: "sh $TRAVIS_BUILD_DIR/.travis-snapshot.sh"
+    skip_cleanup: true
+    on:
+      branch: development
+      tags: true
 
 cache:
   directories:
