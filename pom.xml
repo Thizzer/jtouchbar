@@ -150,9 +150,6 @@
 	<profiles>
 		<profile>
 			<id>maven-central-staging-sign</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<build>
 				<plugins>
 					<plugin>
