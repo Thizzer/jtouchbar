@@ -17,16 +17,13 @@ script:
 
 deploy:
   - provider: script
-    script: 
-      - bash .travis-staging.sh
-      - "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -P sign"
+    script: "sh $TRAVIS_BUILD_DIR/.travis-staging.sh"
     skip_cleanup: true
     on:
       branch: master
       tags: true
   - provider: script
-    script:
-      - "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+    script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
     skip_cleanup: true
     on:
       branch: development

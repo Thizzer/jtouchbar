@@ -10,4 +10,10 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
   gpg --fast-import "$TRAVIS_BUILD_DIR/.travis/codesigning.asc"
 fi
 
+echo "Copying settings"
+cp .travis.settings.xml $HOME/.m2/settings.xml 
+
+echo "Deploying"
+mvn deploy -P sign
+
 exit 0
