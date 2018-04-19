@@ -12,7 +12,7 @@ fi
 echo "Copying settings"
 cp .travis.settings.xml $HOME/.m2/settings.xml 
 
-if [[ $string = *"SNAPSHOT"* ]]; then
+if [[ $TRAVIS_TAG = *"SNAPSHOT"* ]]; then
   echo "Deploying Snapshot"
   mvn clean deploy
 else
