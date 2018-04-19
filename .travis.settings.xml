@@ -11,4 +11,12 @@
       <password>${env.MAVEN_CENTRAL_TOKEN}</password>
     </server>
   </servers>
+  <profile>
+    <id>maven-central-staging-sign</id>
+    <properties>
+      <gpg.executable>gpg</gpg.executable>
+      <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
+      <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+    </properties>
+  </profile>
 </settings>

@@ -14,5 +14,3 @@ then
   unzip -qq apache-maven-3.5.2-bin.zip || exit 1
   rm -f apache-maven-3.5.2-bin.zip
 fi
-
-exit 0
