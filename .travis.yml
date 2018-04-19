@@ -17,18 +17,11 @@ script:
 
 deploy:
   # deploy master to staging
-  - provider: script
-    script: "sh $TRAVIS_BUILD_DIR/.travis-staging.sh"
+  - 
+    provider: script
+    script: "sh $TRAVIS_BUILD_DIR/.travis-deploy.sh"
     skip_cleanup: true
     on:
-      branch: master
-      tags: true
-  # deploy development to snapshot
-  - provider: script
-    script: "sh $TRAVIS_BUILD_DIR/.travis-snapshot.sh"
-    skip_cleanup: true
-    on:
-      branch: development
       tags: true
 
 cache:
