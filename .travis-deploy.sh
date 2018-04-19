@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z "$TRAVIS_TAG" ] then
+if [ -z "$TRAVIS_TAG" ]; then
   echo "Not on a tag, skipping deployment."
   exit 0
 fi
