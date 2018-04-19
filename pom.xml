@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<name>JTouchBar</name>
-	<description>
-		Java library for using the touchbar API on supported macbooks.
-	</description>
+	<description>		Java library for using the touchbar API on supported macbooks.	</description>
 	<url>https://github.com/Thizzer/JTouchBar</url>
 	<licenses>
 		<license>
@@ -69,11 +68,11 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-surefire-plugin</artifactId>
-		        <version>2.12.4</version>
-		        <configuration>
-		          <argLine>-XstartOnFirstThread</argLine>
-		        </configuration>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<argLine>-XstartOnFirstThread</argLine>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -104,28 +103,28 @@
 		</plugins>
 		<resources>
 			<resource>
-    				<directory>${basedir}/src/main/java</directory>
+				<directory>${basedir}/src/main/java</directory>
 				<includes>
-            		    	<include>**/*.java</include>
-            		</includes>
+					<include>**/*.java</include>
+				</includes>
 			</resource>
 			<resource>
-    				<directory>${basedir}/src/test/java</directory>
+				<directory>${basedir}/src/test/java</directory>
 				<includes>
-	                <include>**/*.java</include>
-            		</includes>
+					<include>**/*.java</include>
+				</includes>
 			</resource>
 			<resource>
-    				<directory>${basedir}/src/release/java</directory>
+				<directory>${basedir}/src/release/java</directory>
 				<includes>
-	                <include>**/*.java</include>
-            		</includes>
+					<include>**/*.java</include>
+				</includes>
 			</resource>
 			<resource>
-    				<directory>${basedir}/src/release/resources/</directory>
+				<directory>${basedir}/src/release/resources/</directory>
 				<includes>
-	                <include>**/*</include>
-           	 	</includes>
+					<include>**/*</include>
+				</includes>
 			</resource>
 		</resources>
 	</build>
@@ -148,4 +147,41 @@
 			<version>${swt.version}</version>
 		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>maven-central-staging-sign</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<gpg.executable>gpg</gpg.executable>
+				<gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
+				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+			</properties>
+		</profile>
+	</profiles>
 </project>

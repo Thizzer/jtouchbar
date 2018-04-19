@@ -14,6 +14,6 @@ echo "Copying settings"
 cp .travis.settings.xml $HOME/.m2/settings.xml 
 
 echo "Deploying"
-mvn deploy -P maven-central-staging-sign
+mvn clean deploy -P maven-central-staging-sign
 
 exit 0
