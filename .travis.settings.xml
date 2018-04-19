@@ -1,15 +1,27 @@
 <settings>
-    <servers>
-        <server>
-            <id>maven.central.release</id>
-            <username>${env.MAVEN_CENTRAL_USERNAME}</username>
-            <password>${env.MAVEN_CENTRAL_TOKEN}</password>
-        </server>
-        <server>
-            <id>maven.central.snapshot</id>
-            <username>${env.MAVEN_CENTRAL_USERNAME}</username>
-            <password>${env.MAVEN_CENTRAL_TOKEN}</password>
-        </server>
-    </servers>
+  <servers>
+    <server>
+      <id>maven.central.release</id>
+      <username>${env.MAVEN_CENTRAL_USERNAME}</username>
+      <password>${env.MAVEN_CENTRAL_TOKEN}</password>
+    </server>
+    <server>
+      <id>maven.central.snapshot</id>
+      <username>${env.MAVEN_CENTRAL_USERNAME}</username>
+      <password>${env.MAVEN_CENTRAL_TOKEN}</password>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <id>maven.central.release</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
+        <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
 </settings>
-

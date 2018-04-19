@@ -3,8 +3,35 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>JTouchBar</name>
+	<description>
+		Java library for using the touchbar API on supported macbooks.
+	</description>
+	<url>https://github.com/Thizzer/JTouchBar</url>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://github.com/Thizzer/JTouchBar/blob/master/LICENSE</url>
+		</license>
+	</licenses>
+	<organization>
+		<url>https://www.thizzer.com</url>
+		<name>Thizzer</name>
+	</organization>
+	<developers>
+		<developer>
+			<name>Thys ten Veldhuis</name>
+			<email>t.tenveldhuis@gmail.com</email>
+			<organization>Thizzer</organization>
+			<organizationUrl></organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git://github.com/Thizzer/JTouchBar.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Thizzer/JTouchBar.git</developerConnection>
+		<url>https://github.com/Thizzer/JTouchBar/tree/master</url>
+	</scm>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>maven.central.snapshot</id>
@@ -47,6 +74,32 @@
 		        <configuration>
 		          <argLine>-XstartOnFirstThread</argLine>
 		        </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<resources>
@@ -95,8 +148,33 @@
 			<version>${swt.version}</version>
 		</dependency>
 	</dependencies>
-	<organization>
-		<url>https://www.thizzer.com</url>
-		<name>Thizzer</name>
-	</organization>
+	<profiles>
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<gpgArguments>
+                    					<arg>--pinentry-mode</arg>
+                    					<arg>loopback</arg>
+                					</gpgArguments>
+            					</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
