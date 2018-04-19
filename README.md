@@ -21,7 +21,7 @@ Please take a look at the other stuff the developers are working on and support 
 <dependency>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 </dependency>
 ```
 
