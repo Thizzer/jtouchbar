@@ -16,9 +16,15 @@ then
 fi
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+  echo "Unpacking codesigning keys."
+
   # prepare GPG key
   openssl aes-256-cbc -K $encrypted_24d52a5d9423_key -iv $encrypted_24d52a5d9423_iv -in .travis/codesigning.asc.enc -out .travis/codesigning.asc -d
+
+  echo "Importing codesigning keys."
   gpg --fast-import .travis/codesigning.asc
+else
+  echo "Not matching conditions for unpacking codesigning keys."
 fi
 
 exit 0

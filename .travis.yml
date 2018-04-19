@@ -16,12 +16,18 @@ script:
   - mvn -B clean install -f pom.xml
 
 deploy:
-  provider: script
-  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -P sign"
-  skip_cleanup: true
-  on:
-    branch: master
-    tags: true
+  - provider: script
+    script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy -P sign"
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
+  - provider: script
+    script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+    skip_cleanup: true
+    on:
+      branch: development
+      tags: true
 
 cache:
   directories:
