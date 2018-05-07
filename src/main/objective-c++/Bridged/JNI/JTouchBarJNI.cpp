@@ -116,7 +116,15 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
 
 JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getJavaFXViewPointer0(JNIEnv *env, jclass cls, jobject component) {
     jclass componentClass = env->GetObjectClass(component);
+    
     jfieldID peerField = env->GetFieldID(componentClass, "impl_peer", "Lcom/sun/javafx/tk/TKStage;");
+    JNIContext::HandleExceptions(env);
+    
+    if(peerField == nullptr) {
+        peerField = env->GetFieldID(componentClass, "peer", "Lcom/sun/javafx/tk/TKStage;");
+        JNIContext::HandleExceptions(env);
+    }
+    
     if(peerField == nullptr) {
         return 0L;
     }
