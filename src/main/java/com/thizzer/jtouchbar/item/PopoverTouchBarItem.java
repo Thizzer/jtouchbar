@@ -26,8 +26,8 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	
 	private Boolean _showsCloseButton;
 
-	public PopoverTouchBarItem( String identifier ) {
-		super( identifier );
+	public PopoverTouchBarItem(String identifier) {
+		super(identifier);
 	}
 	
 	public TouchBarView getCollapsedRepresentation() {

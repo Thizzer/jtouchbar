@@ -110,7 +110,7 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
 
     SEL selector = NSSelectorFromString(selectorStr);
     if(selectorStr != nil && [touchBarItem respondsToSelector:selector]) {
-        [touchBarItem performSelector:selector];
+        ((void (*)(id, SEL))[touchBarItem methodForSelector:selector])(touchBarItem, selector);
     }
 }
 
