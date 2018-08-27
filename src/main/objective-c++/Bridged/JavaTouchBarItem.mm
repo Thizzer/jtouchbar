@@ -28,8 +28,6 @@
     NSView *_view;
 }
 
--(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
-
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
 -(void) updateScrubber:(NSScrubber*)scrubber env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView  NS_AVAILABLE_MAC(10_12_2);
@@ -275,11 +273,16 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarview = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarview == nullptr) {
+        return;
+    }
     
     jclass buttonCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(touchBarview, buttonCls)) {
         JNIContext::CallVoidMethod(env, touchBarview, "trigger");
     }
+    
+    env->DeleteLocalRef(touchBarview);
 }
 
 -(void) sliderValueChanged:(id)target {
@@ -290,6 +293,9 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return;
+    }
     
     jclass sliderCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarSlider");
     if(env->IsInstanceOf(touchBarView, sliderCls)) {
@@ -300,6 +306,8 @@
         
         JNIContext::CallVoidMethod(env, actionListener, "sliderValueChanged", "Lcom/thizzer/jtouchbar/item/view/TouchBarSlider;D", touchBarView, [target doubleValue]);
     }
+    
+    env->DeleteLocalRef(touchBarView);
 }
 
 #pragma mark - NSScrubberDelegate
@@ -311,6 +319,9 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
@@ -321,6 +332,8 @@
         
         JNIContext::CallVoidMethod(env, actionListener, "didSelectItemAtIndex", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, selectedIndex);
     }
+    
+    env->DeleteLocalRef(touchBarView);
 }
 
 #pragma mark - NSScrubberDataSource {
@@ -333,16 +346,21 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return 0;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
         jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
-            return 0;
+            return 0; // TODO delete local ref
         }
         
         return JNIContext::CallIntMethod(env, dataSource, "getNumberOfItems", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;", touchBarView);
     }
+    
+    env->DeleteLocalRef(touchBarView);
     
     return 0;
 }
@@ -355,17 +373,20 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return nil;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
         jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
-            return nil;
+            return nil; // TODO delete local ref
         }
         
         jobject javaScrubberView = JNIContext::CallObjectMethod(env, dataSource, "getViewForIndex", "com/thizzer/jtouchbar/scrubber/view/ScrubberView", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, index);
         if(javaScrubberView == nullptr) {
-            return nil;
+            return nil; // TODO delete local ref
         }
         
         std::string identifier = JNIContext::CallStringMethod(env, javaScrubberView, "getIdentifier");
@@ -377,7 +398,7 @@
             std::string stringValue = JNIContext::CallStringMethod(env, javaScrubberView, "getStringValue");
             [textItemView.textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
             
-            return textItemView;
+            return textItemView; // TODO delete local ref
         }
         
         jclass imageItemViewCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/scrubber/view/ScrubberImageItemView");
@@ -393,9 +414,11 @@
             NSImageAlignment alignment = (NSImageAlignment)JNIContext::CallIntMethod(env, javaScrubberView, "getAlignment");
             [imageItemView setImageAlignment:alignment];
             
-            return imageItemView;
+            return imageItemView; // TODO delete local ref
         }
     }
+    
+    env->DeleteLocalRef(touchBarView);
     
     return nil;
 }

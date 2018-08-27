@@ -14,12 +14,9 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Shell;
-
 import com.thizzer.jtouchbar.awt.AWTUtils;
 import com.thizzer.jtouchbar.item.TouchBarItem;
 import com.thizzer.jtouchbar.javafx.JavaFXUtils;
-import com.thizzer.jtouchbar.swt.SWTUtils;
 
 import javafx.application.Platform;
 import javafx.stage.Window;
@@ -65,12 +62,7 @@ public class JTouchBar {
 		long viewPointer = AWTUtils.getViewPointer(c);
 		JTouchBarJNI.setTouchBar0(viewPointer, this);
 	}
-	
-	public void show(Shell shell) {
-		long viewPointer = SWTUtils.getViewPointer(shell);
-		JTouchBarJNI.setTouchBar0(viewPointer, this);
-	}
-	
+
 	public void show(Window window) {
 		if(window == null) {
 			return;
@@ -95,15 +87,7 @@ public class JTouchBar {
 		long viewPointer = AWTUtils.getViewPointer(c);
 		JTouchBarJNI.setTouchBar0(viewPointer, null);
 	}
-	
-	public void hide(Shell shell) {
-		if(shell == null) {
-			return;
-		}
-		long viewPointer = SWTUtils.getViewPointer(shell);
-		JTouchBarJNI.setTouchBar0(viewPointer, null);
-	}
-	
+		
 	public void hide(Window window) {
 		long viewPointer = JavaFXUtils.getViewPointer(window);
 		JTouchBarJNI.setTouchBar0(viewPointer, null);

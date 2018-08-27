@@ -26,8 +26,6 @@
     NSTouchBar *_pressAndHoldTouchBar;
 }
 
--(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
-
 @end
 
 @implementation JavaPopoverTouchBarItem
@@ -67,6 +65,8 @@
             
             _touchBarItem.popoverTouchBar = [_jPopoverTouchBar createNSTouchBar];
             _touchBarItem.popoverTouchBar.delegate = self;
+            
+            env->DeleteLocalRef(popoverTouchBar);
         }
         
         if(pressAndHoldTouchBar != nullptr) {
@@ -76,8 +76,10 @@
             _touchBarItem.pressAndHoldTouchBar = [_jPressAndHoldTouchBar createNSTouchBar];
             _touchBarItem.pressAndHoldTouchBar.delegate = self;
             
-            
+            env->DeleteLocalRef(pressAndHoldTouchBar);
         }
+        
+        env->DeleteLocalRef(jTouchBarView);
     }
     
     return _touchBarItem;

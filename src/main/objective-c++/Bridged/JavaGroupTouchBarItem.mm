@@ -49,6 +49,8 @@
         _touchBarItem = [[NSGroupTouchBarItem alloc] initWithIdentifier:identifier];
         ((NSGroupTouchBarItem*)_touchBarItem).groupTouchBar = [_jTouchBar createNSTouchBar];
         ((NSGroupTouchBarItem*)_touchBarItem).groupTouchBar.delegate = self;
+        
+        env->DeleteLocalRef(groupTouchBar);
     }
     
     return _touchBarItem;

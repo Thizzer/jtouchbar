@@ -17,6 +17,8 @@ Please take a look at the other stuff the developers are working on and support 
 
 ### Maven
 
+#### Regular Use
+
 ```
 <dependency>
 	<groupId>com.thizzer.jtouchbar</groupId>
@@ -25,17 +27,14 @@ Please take a look at the other stuff the developers are working on and support 
 </dependency>
 ```
 
-### Using JTouchBar with SWT
+#### SWT
 
 ```
-Shell shell = ...
-
-JTouchBar jTouchBar = new JTouchBar();
-jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
-
-// Customize your touchbar
-
-jTouchBar.show(shell);
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-swt</artifactId>
+	<version>0.2.0-SNAPSHOT</version>
+</dependency>
 ```
 
 ### Using JTouchBar with Swing
@@ -77,6 +76,19 @@ jTouchBar.setCustomizationIdentifier("MyLWJGLJavaTouchBar");
 jTouchBar.show(
 		GLFWNativeCocoa.glfwGetCocoaWindow(window)
 	);
+```
+
+### Using JTouchBar with SWT
+
+```
+Shell shell = ...
+
+JTouchBar jTouchBar = new JTouchBar();
+jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
+
+// Customize your touchbar
+
+JTouchBarSWTUtils.show(jTouchBar, shell);
 ```
 
 ### Adding views to your touchbar
