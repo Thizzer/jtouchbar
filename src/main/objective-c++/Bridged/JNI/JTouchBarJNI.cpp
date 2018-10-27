@@ -12,6 +12,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <JavaVM/JavaVM.h>
+#import "context.h"
 
 #include "JNIContext.h"
 #include "JavaTouchBarResponder.h"
@@ -71,6 +72,40 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar0(JNIE
         JavaTouchBar *jTouchBar = [[JavaTouchBar alloc] init];
         jTouchBar.javaRepr = touchBar;
 
+        [jTouchBarResponder setTouchBar:jTouchBar window:nsWindow];
+    }
+}
+
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_setTouchBar1(JNIEnv *env, jclass cls, jobject window_handle, jobject touchBar) {
+    MacOSXWindowInfo *window_info = (MacOSXWindowInfo *)env->GetDirectBufferAddress(window_handle);
+    NSWindow *nsWindow = window_info->view.window;
+    
+    if(nsWindow == nil) {
+        return;
+    }
+    
+    JavaTouchBarResponder *jPreviousTouchBarResponder = [windowMapping objectForKey:nsWindow];
+    if(jPreviousTouchBarResponder == nil && touchBar == nullptr) {
+        return;
+    }
+    
+    if(touchBar == nullptr) {
+        [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
+        [windowMapping removeObjectForKey:nsWindow];
+    }
+    else {
+        if(jPreviousTouchBarResponder != nil) {
+            // ensure any old references get destroyed
+            [jPreviousTouchBarResponder setTouchBar:nil window:nsWindow];
+            [windowMapping removeObjectForKey:nsWindow];
+        }
+        
+        JavaTouchBarResponder *jTouchBarResponder = [[JavaTouchBarResponder alloc] init];
+        [windowMapping setObject:jTouchBarResponder forKey:nsWindow];
+        
+        JavaTouchBar *jTouchBar = [[JavaTouchBar alloc] init];
+        jTouchBar.javaRepr = touchBar;
+        
         [jTouchBarResponder setTouchBar:jTouchBar window:nsWindow];
     }
 }

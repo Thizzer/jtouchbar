@@ -11,6 +11,7 @@
 package com.thizzer.jtouchbar;
 
 import java.awt.Component;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,10 @@ public class JTouchBar {
 		JTouchBarJNI.setTouchBar0(viewPointer, this);
 	}
 
+	public void show(ByteBuffer window) {
+		JTouchBarJNI.setTouchBar1(window, this);
+	}
+
 	public void show(Window window) {
 		if(window == null) {
 			return;
@@ -95,5 +100,9 @@ public class JTouchBar {
 	
 	public void hide(long window) {
 		JTouchBarJNI.setTouchBar0(window, null);
+	}
+
+	public void hide(ByteBuffer window) {
+		JTouchBarJNI.setTouchBar1(window, null);
 	}
 }

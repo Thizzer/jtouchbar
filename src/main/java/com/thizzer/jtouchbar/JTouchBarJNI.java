@@ -16,6 +16,7 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 
 public class JTouchBarJNI {
@@ -30,7 +31,9 @@ public class JTouchBarJNI {
 	}
 	
 	public static native void setTouchBar0(long viewPointer, JTouchBar touchBar);
-	
+
+	public static native void setTouchBar1(ByteBuffer window_handle, JTouchBar touchBar);
+
 	public static native void updateTouchBarItem(long nativeInstancePointer);
 	
 	public static native void callObjectSelector(long nativeInstancePointer, String selector);
