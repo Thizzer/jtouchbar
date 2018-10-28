@@ -12,7 +12,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <JavaVM/JavaVM.h>
-#import "context.h"
+#import "LWJGLContext.h"
 
 #include "JNIContext.h"
 #include "JavaTouchBarResponder.h"
