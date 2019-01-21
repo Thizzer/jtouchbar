@@ -25,8 +25,6 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
     
 JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getAWTViewPointer0(JNIEnv *env, jclass cls, jobject component);
     
-JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getJavaFXViewPointer0(JNIEnv *env, jclass cls, jobject window);
-    
 #ifdef __cplusplus
 }
 #endif

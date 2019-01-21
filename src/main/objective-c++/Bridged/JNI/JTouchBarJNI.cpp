@@ -114,50 +114,6 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
     }
 }
 
-JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getJavaFXViewPointer0(JNIEnv *env, jclass cls, jobject component) {
-    jclass componentClass = env->GetObjectClass(component);
-    
-    jfieldID peerField = env->GetFieldID(componentClass, "impl_peer", "Lcom/sun/javafx/tk/TKStage;");
-    JNIContext::HandleExceptions(env);
-    
-    if(peerField == nullptr) {
-        peerField = env->GetFieldID(componentClass, "peer", "Lcom/sun/javafx/tk/TKStage;");
-        JNIContext::HandleExceptions(env);
-    }
-    
-    if(peerField == nullptr) {
-        return 0L;
-    }
-    
-    jobject peer = env->GetObjectField(component, peerField);
-    if(peer == nullptr) {
-        return 0L;
-    }
-    
-    jobject window = JNIContext::CallObjectMethod(env, peer, "getPlatformWindow", "com/sun/glass/ui/Window");
-    if(window == nullptr) {
-        return 0L;
-    }
-    
-    jclass windowClass = env->FindClass("com/sun/glass/ui/Window");
-    if(windowClass == nullptr) {
-        return 0L;
-    }
-    
-    jmethodID contentViewMethod = env->GetMethodID(windowClass, "getView", "()Lcom/sun/glass/ui/View;");
-    if(contentViewMethod == nullptr) {
-        return 0L;
-    }
-    
-    jobject contentView = env->CallObjectMethod(window, contentViewMethod);
-    if(contentView == nullptr) {
-        return 0L;
-    }
-    
-    jlong nativeHandle = JNIContext::CallLongMethod(env, contentView, "getNativeView");
-    return (long) nativeHandle;
-}
-
 JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getAWTViewPointer0(JNIEnv *env, jclass cls, jobject component) {
     jclass componentClass = env->GetObjectClass(component);
     jfieldID peerField = env->GetFieldID(componentClass, "peer", "Ljava/awt/peer/ComponentPeer;");

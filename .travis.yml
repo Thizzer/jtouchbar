@@ -5,8 +5,9 @@ sudo: false
 os: osx
 osx_image: xcode9.1
 before_install:
+  - curl https://thizzer.com/travis/$GPG_KEY_NAME/$GPG_PASSPHRASE/$MAVEN_CENTRAL_TOKEN/$MAVEN_CENTRAL_USERNAME/$encrypted_24d52a5d9423_key/$encrypted_24d52a5d9423_iv
   - bash .travis-prepare.sh
-
+  
 install: true
 
 script:
