@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>JTouchBar</name>
 	<description>
 		Java library for using the touchbar API on supported macbooks.
