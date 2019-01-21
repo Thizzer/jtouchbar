@@ -15,7 +15,6 @@ cp .travis.settings.xml $HOME/.m2/settings.xml
 if [[ $TRAVIS_TAG = *"SNAPSHOT"* ]]; then
   echo "Deploying Snapshot"
   mvn clean deploy -f pom.xml
-  mvn clean deploy -f pom-swt.xml
 else
   echo "Unpacking codesigning keys."
 
@@ -27,5 +26,4 @@ else
 
   echo "Deploying Release"
   mvn clean deploy -f pom.xml -P maven-central-staging-sign
-  mvn clean deploy -f pom-swt.xml -P maven-central-staging-sign
 fi
