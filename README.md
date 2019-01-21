@@ -17,9 +17,7 @@ Please take a look at the other stuff the developers are working on and support 
 
 ### Maven
 
-#### Regular Use
-
-```
+```xml
 <dependency>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
@@ -27,19 +25,9 @@ Please take a look at the other stuff the developers are working on and support 
 </dependency>
 ```
 
-#### SWT
-
-```
-<dependency>
-	<groupId>com.thizzer.jtouchbar</groupId>
-	<artifactId>jtouchbar-swt</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
-</dependency>
-```
-
 ### Using JTouchBar with Swing
 
-```
+```java
 JFrame frame = ...
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -52,7 +40,15 @@ jTouchBar.show(frame);
 
 ### Using JTouchBar with JavaFX
 
+```xml
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-javafx</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
 ```
+
+```java
 Stage stage = ...
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -65,7 +61,7 @@ jTouchBar.show(stage);
 
 ### Using JTouchBar with LWJGL
 
-```
+```java
 long window = ... // LWJGL window
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -80,7 +76,15 @@ jTouchBar.show(
 
 ### Using JTouchBar with SWT
 
+```xml
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-swt</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
 ```
+
+```java
 Shell shell = ...
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -93,7 +97,7 @@ JTouchBarSWTUtils.show(jTouchBar, shell);
 
 ### Adding views to your touchbar
 
-```
+```java
 // flexible space
 jTouchBar.addItem(new TouchBarItem(TouchBarItem.NSTouchBarItemIdentifierFlexibleSpace));
 

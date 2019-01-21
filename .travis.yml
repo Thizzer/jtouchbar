@@ -12,7 +12,6 @@ install: true
 script:
   - xcodebuild -scheme JTouchBar-Release
   - mvn -B clean install -f pom.xml
-  - mvn -B clean install -f pom-swt.xml
 
 deploy:
   # deploy master to staging
