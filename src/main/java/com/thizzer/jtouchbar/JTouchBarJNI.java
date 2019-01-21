@@ -35,8 +35,6 @@ public class JTouchBarJNI {
 	
 	public static native void callObjectSelector(long nativeInstancePointer, String selector);
 	
-	public static native long getJavaFXViewPointer0(Window w);
-	
 	public static native long getAWTViewPointer0(Component c);
 	
 	private static void loadLibraryFromJar(String path) throws UnsatisfiedLinkError {

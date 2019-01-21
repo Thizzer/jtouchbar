@@ -56,7 +56,7 @@ jTouchBar.setCustomizationIdentifier("MyJavaFXJavaTouchBar");
 
 // Customize your touchbar
 
-jTouchBar.show(stage);
+JTouchBarJavaFX.show(jTouchBar, shell);
 ```
 
 ### Using JTouchBar with LWJGL
@@ -92,7 +92,7 @@ jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
 
 // Customize your touchbar
 
-JTouchBarSWTUtils.show(jTouchBar, shell);
+JTouchBarSWT.show(jTouchBar, shell);
 ```
 
 ### Adding views to your touchbar
