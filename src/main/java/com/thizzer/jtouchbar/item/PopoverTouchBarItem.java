@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2018 thizzer.com
+ * Copyright (c) 2018 - 2019 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -26,8 +26,8 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	
 	private Boolean _showsCloseButton;
 
-	public PopoverTouchBarItem( String identifier ) {
-		super( identifier );
+	public PopoverTouchBarItem(String identifier) {
+		super(identifier);
 	}
 	
 	public TouchBarView getCollapsedRepresentation() {
@@ -76,11 +76,11 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	}
 	
 	public void showPopover() {
-		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "showPopover");
+		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "showPopover", true);
 	}
 	
 	public void dismissPopover() {
-		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "dismissPopover");
+		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "dismissPopover", true);
 	}
 
 	public Boolean isShowsCloseButton() {

@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2018 thizzer.com
+ * Copyright (c) 2018 - 2019 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -30,5 +30,7 @@ NS_CLASS_AVAILABLE_MAC(10_12_2)
 
 -(BOOL) isCustomizationAllowed:(JNIEnv*)env reload:(BOOL)reload;
 -(BOOL) isCustomizationAllowed;
+
+-(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
 
 @end

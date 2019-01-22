@@ -6,22 +6,21 @@ os: osx
 osx_image: xcode9.1
 before_install:
   - bash .travis-prepare.sh
-
+  
 install: true
 
 script:
-  - xcodebuild -scheme JTouchBar-Debug
-  - mvn -B clean install -f pom-debug.xml
   - xcodebuild -scheme JTouchBar-Release
   - mvn -B clean install -f pom.xml
 
 deploy:
-  provider: script
-  script: "sh $TRAVIS_BUILD_DIR/.travis-staging.sh"
-  skip_cleanup: true
-  on:
-    branch: master
-    tags: true
+  # deploy master to staging
+  - 
+    provider: script
+    script: "sh $TRAVIS_BUILD_DIR/.travis-deploy.sh"
+    skip_cleanup: true
+    on:
+      tags: true
 
 cache:
   directories:

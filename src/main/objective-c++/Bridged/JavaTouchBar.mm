@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2018 thizzer.com
+ * Copyright (c) 2018 - 2019 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -138,6 +138,9 @@
     
     for(JavaTouchBarItem *item in [self getTouchBarItems]) {
         NSString *identifier = [item getIdentifier];
+        if(identifier == nil || [identifier isEqualToString:@""]) {
+            [NSException raise:NSInvalidArgumentException format:@"Trying to use TouchBarItem without proper identifier."];
+        }
         [defaultIdentifiers addObject:identifier];
         
         if([item isCustomizationAllowed]){

@@ -8,14 +8,13 @@
  *
  * @author  	M. ten Veldhuis
  */
-package com.thizzer.jtouchbar.item.view;
+package com.thizzer.jtouchbar.common;
 
-import com.thizzer.jtouchbar.NativeLinkObject;
+public class ControlState {
 
-public abstract class TouchBarView extends NativeLinkObject {
-		
-	void update() {
-		setChanged();
-		notifyObservers();
-	}
+    public static final int MIXED           = -1;
+    
+    public static final int OFF             = 0;
+    
+    public static final int ON       	   = 1;
 }

@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2018 thizzer.com
+ * Copyright (c) 2018 - 2019 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -27,8 +27,6 @@
     
     NSView *_view;
 }
-
--(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
 
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView;
@@ -185,34 +183,56 @@
         [self updateSlider:(NSSlider*)viewToCreateOrUpdate env:env jTouchBarView:jTouchBarView];
     }
     
+    [self setNativeInstancePointer:jTouchBarView toInstance:viewToCreateOrUpdate];
+    
     return viewToCreateOrUpdate;
 }
 
 -(void) updateButton:(NSButton*)button env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
     // update title
     std::string title = JNIContext::CallStringMethod(env, jTouchBarView, "getTitle");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
-    });
+    std::string alternateTitle = JNIContext::CallStringMethod(env, jTouchBarView, "getAlternateTitle");
     
     color_t color = JNIContext::CallColorMethod(env, jTouchBarView, "getBezelColor");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [button setBezelColor:[JTouchBarUtils getNSColor:color]];
-    });
     
     image_t image = JNIContext::CallImageMethod(env, jTouchBarView, "getImage");
+    image_t alternateImage = JNIContext::CallImageMethod(env, jTouchBarView, "getAlternateImage");
+    
     int imagePosition = JNIContext::CallIntMethod(env, jTouchBarView, "getImagePosition");
     
     NSImage *nsImage = [JTouchBarUtils getNSImage:image];
-    if(nsImage != nil) {
-       dispatch_async(dispatch_get_main_queue(), ^{
-           [button setImage:nsImage];
-           [button setImagePosition:(NSCellImagePosition)imagePosition];
-       });
-    }
+    NSImage *nsAlternateImage = [JTouchBarUtils getNSImage:alternateImage];
     
+    bool allowsMixedState = JNIContext::CallBooleanMethod(env, jTouchBarView, "getAllowsMixedState");
+    
+    int buttonType = JNIContext::CallIntMethod(env, jTouchBarView, "getButtonType");
     bool enabled = JNIContext::CallBooleanMethod(env, jTouchBarView, "isEnabled");
-    [button setEnabled:enabled];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(!title.empty()) {
+            [button setTitle:[NSString stringWithUTF8String:title.c_str()]];
+        }
+        
+        if(!alternateTitle.empty()) {
+            [button setAlternateTitle:[NSString stringWithUTF8String:alternateTitle.c_str()]];
+        }
+        
+        if(nsImage != nil) {
+            [button setImage:nsImage];
+            [button setImagePosition:(NSCellImagePosition)imagePosition];
+        }
+        
+        if(nsAlternateImage != nil) {
+            [button setAlternateImage:nsAlternateImage];
+            [button setImagePosition:(NSCellImagePosition)imagePosition]; // ensure image position has been set
+        }
+        
+        [button setBezelColor:[JTouchBarUtils getNSColor:color]];
+        
+        [button setButtonType:(NSButtonType)buttonType];
+        [button setAllowsMixedState:allowsMixedState];
+        [button setEnabled:enabled];
+    });
 }
 
 -(void) updateTextField:(NSTextField*)textField env:(JNIEnv*)env jTouchBarView:(jobject)jTouchBarView {
@@ -275,11 +295,16 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarview = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarview == nullptr) {
+        return;
+    }
     
     jclass buttonCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarButton");
     if(env->IsInstanceOf(touchBarview, buttonCls)) {
         JNIContext::CallVoidMethod(env, touchBarview, "trigger");
     }
+    
+    env->DeleteLocalRef(touchBarview);
 }
 
 -(void) sliderValueChanged:(id)target {
@@ -290,6 +315,9 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return;
+    }
     
     jclass sliderCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarSlider");
     if(env->IsInstanceOf(touchBarView, sliderCls)) {
@@ -300,6 +328,8 @@
         
         JNIContext::CallVoidMethod(env, actionListener, "sliderValueChanged", "Lcom/thizzer/jtouchbar/item/view/TouchBarSlider;D", touchBarView, [target doubleValue]);
     }
+    
+    env->DeleteLocalRef(touchBarView);
 }
 
 #pragma mark - NSScrubberDelegate
@@ -311,6 +341,9 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
@@ -321,6 +354,8 @@
         
         JNIContext::CallVoidMethod(env, actionListener, "didSelectItemAtIndex", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, selectedIndex);
     }
+    
+    env->DeleteLocalRef(touchBarView);
 }
 
 #pragma mark - NSScrubberDataSource {
@@ -333,16 +368,21 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return 0;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
         jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
-            return 0;
+            return 0; // TODO delete local ref
         }
         
         return JNIContext::CallIntMethod(env, dataSource, "getNumberOfItems", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;", touchBarView);
     }
+    
+    env->DeleteLocalRef(touchBarView);
     
     return 0;
 }
@@ -355,17 +395,20 @@
     JNIEnv *env; JNIContext context(&env);
     
     jobject touchBarView = JNIContext::CallObjectMethod(env, _javaRepr, "getView", "com/thizzer/jtouchbar/item/view/TouchBarView");
+    if(touchBarView == nullptr) {
+        return nil;
+    }
     
     jclass scrubberCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/item/view/TouchBarScrubber");
     if(env->IsInstanceOf(touchBarView, scrubberCls)) {
         jobject dataSource = JNIContext::CallObjectMethod(env, touchBarView, "getDataSource", "com/thizzer/jtouchbar/scrubber/ScrubberDataSource");
         if(dataSource == nullptr) {
-            return nil;
+            return nil; // TODO delete local ref
         }
         
         jobject javaScrubberView = JNIContext::CallObjectMethod(env, dataSource, "getViewForIndex", "com/thizzer/jtouchbar/scrubber/view/ScrubberView", "Lcom/thizzer/jtouchbar/item/view/TouchBarScrubber;J", touchBarView, index);
         if(javaScrubberView == nullptr) {
-            return nil;
+            return nil; // TODO delete local ref
         }
         
         std::string identifier = JNIContext::CallStringMethod(env, javaScrubberView, "getIdentifier");
@@ -377,7 +420,7 @@
             std::string stringValue = JNIContext::CallStringMethod(env, javaScrubberView, "getStringValue");
             [textItemView.textField setStringValue:[NSString stringWithUTF8String:stringValue.c_str()]];
             
-            return textItemView;
+            return textItemView; // TODO delete local ref
         }
         
         jclass imageItemViewCls = JNIContext::GetOrFindClass(env, "com/thizzer/jtouchbar/scrubber/view/ScrubberImageItemView");
@@ -393,9 +436,11 @@
             NSImageAlignment alignment = (NSImageAlignment)JNIContext::CallIntMethod(env, javaScrubberView, "getAlignment");
             [imageItemView setImageAlignment:alignment];
             
-            return imageItemView;
+            return imageItemView; // TODO delete local ref
         }
     }
+    
+    env->DeleteLocalRef(touchBarView);
     
     return nil;
 }
@@ -408,11 +453,20 @@
     
     if(javaRepr != NULL) {
         _javaRepr = env->NewGlobalRef(javaRepr);
-        JNIContext::CallVoidMethod(env, _javaRepr, "setNativeInstancePointer", "J", (long) self);
+        [self setNativeInstancePointer:_javaRepr toInstance:self];
     }
     else {
         _javaRepr = NULL;
     }
+}
+
+-(void) setNativeInstancePointer:(jobject)nativeLinkObj toInstance:(id)instance {
+    if(nativeLinkObj == NULL) {
+        return;
+    }
+    
+    JNIEnv *env; JNIContext context(&env);
+    JNIContext::CallVoidMethod(env, nativeLinkObj, "setNativeInstancePointer", "J", (long) instance);
 }
 
 -(void)dealloc {

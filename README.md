@@ -17,30 +17,23 @@ Please take a look at the other stuff the developers are working on and support 
 
 ### Maven
 
-```
+```xml
 <dependency>
 	<groupId>com.thizzer.jtouchbar</groupId>
 	<artifactId>jtouchbar</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 </dependency>
 ```
 
-### Using JTouchBar with SWT
+### Gradle
 
-```
-Shell shell = ...
-
-JTouchBar jTouchBar = new JTouchBar();
-jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
-
-// Customize your touchbar
-
-jTouchBar.show(shell);
+```gradle
+implementation group: 'com.thizzer.jtouchbar', name: 'jtouchbar', version: '1.0.0'
 ```
 
 ### Using JTouchBar with Swing
 
-```
+```java
 JFrame frame = ...
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -53,7 +46,27 @@ jTouchBar.show(frame);
 
 ### Using JTouchBar with JavaFX
 
+There is a separate library for adding JavaFX support.
+
+#### Maven
+
+```xml
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-javafx</artifactId>
+	<version>1.0.0</version>
+</dependency>
 ```
+
+#### Gradle
+
+```gradle
+implementation group: 'com.thizzer.jtouchbar', name: 'jtouchbar-javafx', version: '1.0.0'
+```
+
+#### JavaFX Example
+
+```java
 Stage stage = ...
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -61,12 +74,12 @@ jTouchBar.setCustomizationIdentifier("MyJavaFXJavaTouchBar");
 
 // Customize your touchbar
 
-jTouchBar.show(stage);
+JTouchBarJavaFX.show(jTouchBar, shell);
 ```
 
 ### Using JTouchBar with LWJGL
 
-```
+```java
 long window = ... // LWJGL window
 
 JTouchBar jTouchBar = new JTouchBar();
@@ -79,9 +92,49 @@ jTouchBar.show(
 	);
 ```
 
+### Using JTouchBar with SWT
+
+There is a separate library for adding SWT support.
+
+#### Maven
+
+```xml
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-swt</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+#### Gradle
+
+```gradle
+implementation group: 'com.thizzer.jtouchbar', name: 'jtouchbar-swt', version: '1.0.0'
+```
+```xml
+<dependency>
+	<groupId>com.thizzer.jtouchbar</groupId>
+	<artifactId>jtouchbar-swt</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
+```
+
+#### SWT Example
+
+```java
+Shell shell = ...
+
+JTouchBar jTouchBar = new JTouchBar();
+jTouchBar.setCustomizationIdentifier("MySWTJavaTouchBar");
+
+// Customize your touchbar
+
+JTouchBarSWT.show(jTouchBar, shell);
+```
+
 ### Adding views to your touchbar
 
-```
+```java
 // flexible space
 jTouchBar.addItem(new TouchBarItem(TouchBarItem.NSTouchBarItemIdentifierFlexibleSpace));
 

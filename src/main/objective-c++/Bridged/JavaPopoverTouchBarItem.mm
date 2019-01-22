@@ -1,7 +1,7 @@
 /**
  * JTouchBar
  *
- * Copyright (c) 2018 thizzer.com
+ * Copyright (c) 2018 - 2019 thizzer.com
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE file for details.
@@ -25,8 +25,6 @@
     JavaTouchBar *_jPressAndHoldTouchBar;
     NSTouchBar *_pressAndHoldTouchBar;
 }
-
--(NSView*) createOrUpdateView:(NSView*)viewToCreateOrUpdate jTouchBarView:(jobject)jTouchBarView;
 
 @end
 
@@ -67,6 +65,8 @@
             
             _touchBarItem.popoverTouchBar = [_jPopoverTouchBar createNSTouchBar];
             _touchBarItem.popoverTouchBar.delegate = self;
+            
+            env->DeleteLocalRef(popoverTouchBar);
         }
         
         if(pressAndHoldTouchBar != nullptr) {
@@ -76,8 +76,10 @@
             _touchBarItem.pressAndHoldTouchBar = [_jPressAndHoldTouchBar createNSTouchBar];
             _touchBarItem.pressAndHoldTouchBar.delegate = self;
             
-            
+            env->DeleteLocalRef(pressAndHoldTouchBar);
         }
+        
+        env->DeleteLocalRef(jTouchBarView);
     }
     
     return _touchBarItem;
