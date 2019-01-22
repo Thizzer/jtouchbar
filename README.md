@@ -61,7 +61,7 @@ There is a separate library for adding JavaFX support.
 #### Gradle
 
 ```gradle
-implementation group: 'com.thizzer.jtouchbar-javafx', name: 'jtouchbar', version: '1.0.0'
+implementation group: 'com.thizzer.jtouchbar', name: 'jtouchbar-javafx', version: '1.0.0'
 ```
 
 #### JavaFX Example
@@ -109,7 +109,7 @@ There is a separate library for adding SWT support.
 #### Gradle
 
 ```gradle
-implementation group: 'com.thizzer.jtouchbar-swt', name: 'jtouchbar', version: '1.0.0'
+implementation group: 'com.thizzer.jtouchbar', name: 'jtouchbar-swt', version: '1.0.0'
 ```
 ```xml
 <dependency>
