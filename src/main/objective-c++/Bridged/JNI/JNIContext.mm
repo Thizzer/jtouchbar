@@ -10,8 +10,8 @@
  */
 #include "JNIContext.h"
 
-#include <Cocoa/Cocoa.h>
-#include <JavaVM/JavaVM.h>
+#import <Cocoa/Cocoa.h>
+#import <JavaVM/JavaVM.h>
 
 #include <map>
 
@@ -487,4 +487,24 @@ void JNIContext::HandleExceptions(JNIEnv* env) {
         // TODO actually handle the exception
         env->ExceptionClear();
     }
+}
+
+void JNIContext::ThrowJavaException(JNIEnv* env, NSException* e) {
+    if(env == nullptr) {
+        return;
+    }
+    
+    std::string classname = "java/lang/RuntimeException";
+    if(e.name == NSInvalidArgumentException) {
+        classname = "java/lang/IllegalArgumentException";
+    }
+    
+    jclass exceptionClass = GetOrFindClass( env, classname.c_str() );
+    if ( exceptionClass == NULL )
+    {
+        return;
+    }
+
+    env->ThrowNew( exceptionClass, [e.description UTF8String] );
+
 }

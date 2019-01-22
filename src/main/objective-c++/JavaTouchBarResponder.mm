@@ -17,6 +17,9 @@
 -(void) setTouchBar:(JavaTouchBar *)jTouchBar window:(NSWindow*)window {
     self.jTouchBar = jTouchBar;
     
+    // prepare touchbar, handling creation exceptions on the current thread.
+    [self makeTouchBar];
+    
     if(@available(macOS 10_12_2, *)) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if(self.jTouchBar == nil) {

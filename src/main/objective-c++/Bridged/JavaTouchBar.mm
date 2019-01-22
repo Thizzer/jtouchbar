@@ -138,6 +138,9 @@
     
     for(JavaTouchBarItem *item in [self getTouchBarItems]) {
         NSString *identifier = [item getIdentifier];
+        if(identifier == nil || [identifier isEqualToString:@""]) {
+            [NSException raise:NSInvalidArgumentException format:@"Trying to use TouchBarItem without proper identifier."];
+        }
         [defaultIdentifiers addObject:identifier];
         
         if([item isCustomizationAllowed]){

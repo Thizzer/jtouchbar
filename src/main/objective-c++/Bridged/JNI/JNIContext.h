@@ -11,6 +11,8 @@
 #ifndef JNICONTEXT_H
 #define JNICONTEXT_H
 
+#import <Foundation/Foundation.h>
+
 #include <jni.h>
 
 #include <vector>
@@ -68,6 +70,7 @@ public:
     static image_t CallImageMethod(JNIEnv* env, jobject target, const std::string& method);
     
     static void HandleExceptions(JNIEnv* env);
+    static void ThrowJavaException(JNIEnv* env, NSException* e);
 };
 
 #endif // JNICONTEXT_H

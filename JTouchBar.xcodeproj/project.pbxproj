@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		771AC5C021F7ACB900BA4322 /* JTouchBarBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 771AC5BE21F7ACB900BA4322 /* JTouchBarBridge.h */; };
+		771AC5C121F7ACB900BA4322 /* JTouchBarBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 771AC5BF21F7ACB900BA4322 /* JTouchBarBridge.mm */; };
 		77437EC21F9E849C0064C69F /* JavaTouchBarResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC01F9E849C0064C69F /* JavaTouchBarResponder.h */; };
 		77437EC31F9E849C0064C69F /* JavaTouchBarResponder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437EC11F9E849C0064C69F /* JavaTouchBarResponder.mm */; };
 		77437ECA1F9E84A60064C69F /* JavaTouchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437EC41F9E84A60064C69F /* JavaTouchBar.h */; };
@@ -18,7 +20,7 @@
 		77437ED61F9E84B20064C69F /* JTouchBarJNI.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437ED01F9E84B20064C69F /* JTouchBarJNI.h */; };
 		77437ED91F9E84B20064C69F /* JTouchBarJNI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */; };
 		77437EDA1F9E84B20064C69F /* JNIContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 77437ED41F9E84B20064C69F /* JNIContext.h */; };
-		77437EDB1F9E84B20064C69F /* JNIContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED51F9E84B20064C69F /* JNIContext.cpp */; };
+		77437EDB1F9E84B20064C69F /* JNIContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77437ED51F9E84B20064C69F /* JNIContext.mm */; };
 		778F96FF207E0E0C007D0982 /* JavaPopoverTouchBarItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 778F96FD207E0E0C007D0982 /* JavaPopoverTouchBarItem.mm */; };
 		778F9700207E0E0C007D0982 /* JavaPopoverTouchBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 778F96FE207E0E0C007D0982 /* JavaPopoverTouchBarItem.h */; };
 		778F9703207E2D89007D0982 /* JTouchBarUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 778F9701207E2D89007D0982 /* JTouchBarUtils.mm */; };
@@ -28,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		771AC5BE21F7ACB900BA4322 /* JTouchBarBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JTouchBarBridge.h; path = "src/main/objective-c++/Bridged/JNI/JTouchBarBridge.h"; sourceTree = "<group>"; };
+		771AC5BF21F7ACB900BA4322 /* JTouchBarBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = JTouchBarBridge.mm; path = "src/main/objective-c++/Bridged/JNI/JTouchBarBridge.mm"; sourceTree = "<group>"; };
 		77437EC01F9E849C0064C69F /* JavaTouchBarResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaTouchBarResponder.h; path = "src/main/objective-c++/JavaTouchBarResponder.h"; sourceTree = SOURCE_ROOT; };
 		77437EC11F9E849C0064C69F /* JavaTouchBarResponder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaTouchBarResponder.mm; path = "src/main/objective-c++/JavaTouchBarResponder.mm"; sourceTree = SOURCE_ROOT; };
 		77437EC41F9E84A60064C69F /* JavaTouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaTouchBar.h; path = "src/main/objective-c++/Bridged/JavaTouchBar.h"; sourceTree = SOURCE_ROOT; };
@@ -39,7 +43,7 @@
 		77437ED01F9E84B20064C69F /* JTouchBarJNI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JTouchBarJNI.h; path = "src/main/objective-c++/Bridged/JNI/JTouchBarJNI.h"; sourceTree = SOURCE_ROOT; };
 		77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JTouchBarJNI.cpp; path = "src/main/objective-c++/Bridged/JNI/JTouchBarJNI.cpp"; sourceTree = SOURCE_ROOT; };
 		77437ED41F9E84B20064C69F /* JNIContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JNIContext.h; path = "src/main/objective-c++/Bridged/JNI/JNIContext.h"; sourceTree = SOURCE_ROOT; };
-		77437ED51F9E84B20064C69F /* JNIContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JNIContext.cpp; path = "src/main/objective-c++/Bridged/JNI/JNIContext.cpp"; sourceTree = SOURCE_ROOT; };
+		77437ED51F9E84B20064C69F /* JNIContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JNIContext.mm; path = "src/main/objective-c++/Bridged/JNI/JNIContext.mm"; sourceTree = SOURCE_ROOT; };
 		778F96FD207E0E0C007D0982 /* JavaPopoverTouchBarItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JavaPopoverTouchBarItem.mm; path = "src/main/objective-c++/Bridged/JavaPopoverTouchBarItem.mm"; sourceTree = "<group>"; };
 		778F96FE207E0E0C007D0982 /* JavaPopoverTouchBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JavaPopoverTouchBarItem.h; path = "src/main/objective-c++/Bridged/JavaPopoverTouchBarItem.h"; sourceTree = "<group>"; };
 		778F9701207E2D89007D0982 /* JTouchBarUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = JTouchBarUtils.mm; path = "src/main/objective-c++/Bridged/JTouchBarUtils.mm"; sourceTree = "<group>"; };
@@ -93,7 +97,9 @@
 		77437EBF1F9E84110064C69F /* JNI */ = {
 			isa = PBXGroup;
 			children = (
-				77437ED51F9E84B20064C69F /* JNIContext.cpp */,
+				771AC5BF21F7ACB900BA4322 /* JTouchBarBridge.mm */,
+				771AC5BE21F7ACB900BA4322 /* JTouchBarBridge.h */,
+				77437ED51F9E84B20064C69F /* JNIContext.mm */,
 				77437ED41F9E84B20064C69F /* JNIContext.h */,
 				77437ED31F9E84B20064C69F /* JTouchBarJNI.cpp */,
 				77437ED01F9E84B20064C69F /* JTouchBarJNI.h */,
@@ -139,6 +145,7 @@
 				77437EC21F9E849C0064C69F /* JavaTouchBarResponder.h in Headers */,
 				778F9700207E0E0C007D0982 /* JavaPopoverTouchBarItem.h in Headers */,
 				77437ECD1F9E84A60064C69F /* JavaTouchBarItem.h in Headers */,
+				771AC5C021F7ACB900BA4322 /* JTouchBarBridge.h in Headers */,
 				77437ECE1F9E84A60064C69F /* JavaGroupTouchBarItem.h in Headers */,
 				77437EDA1F9E84B20064C69F /* JNIContext.h in Headers */,
 				77437ED61F9E84B20064C69F /* JTouchBarJNI.h in Headers */,
@@ -202,7 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77437EDB1F9E84B20064C69F /* JNIContext.cpp in Sources */,
+				77437EDB1F9E84B20064C69F /* JNIContext.mm in Sources */,
 				77437ECF1F9E84A60064C69F /* JavaTouchBarItem.mm in Sources */,
 				77437EC31F9E849C0064C69F /* JavaTouchBarResponder.mm in Sources */,
 				778F96FF207E0E0C007D0982 /* JavaPopoverTouchBarItem.mm in Sources */,
@@ -210,6 +217,7 @@
 				77437ECB1F9E84A60064C69F /* JavaTouchBar.mm in Sources */,
 				77437ED91F9E84B20064C69F /* JTouchBarJNI.cpp in Sources */,
 				77437ECC1F9E84A60064C69F /* JavaGroupTouchBarItem.mm in Sources */,
+				771AC5C121F7ACB900BA4322 /* JTouchBarBridge.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
