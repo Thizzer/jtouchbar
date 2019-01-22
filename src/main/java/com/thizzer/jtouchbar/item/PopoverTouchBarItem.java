@@ -76,11 +76,11 @@ public class PopoverTouchBarItem extends TouchBarItem {
 	}
 	
 	public void showPopover() {
-		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "showPopover");
+		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "showPopover", true);
 	}
 	
 	public void dismissPopover() {
-		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "dismissPopover");
+		JTouchBarJNI.callObjectSelector(getNativeInstancePointer(), "dismissPopover", true);
 	}
 
 	public Boolean isShowsCloseButton() {

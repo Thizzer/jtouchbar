@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_updateTouchBarIte
     [touchBarItem update];
 }
 
-JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelector(JNIEnv *env, jclass cls, jlong objectPointer, jstring javaSelector) {
+JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelector(JNIEnv *env, jclass cls, jlong objectPointer, jstring javaSelector, jboolean onMainThread) {
     void* cItemPointer = (void*)objectPointer;
     if(cItemPointer == nullptr) {
         return;
@@ -110,8 +110,42 @@ JNIEXPORT void JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callObjectSelecto
 
     SEL selector = NSSelectorFromString(selectorStr);
     if(selectorStr != nil && [touchBarItem respondsToSelector:selector]) {
-        ((void (*)(id, SEL))[touchBarItem methodForSelector:selector])(touchBarItem, selector);
+        if(onMainThread) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ((void (*)(id, SEL))[touchBarItem methodForSelector:selector])(touchBarItem, selector);
+            });
+        }
+        else {
+            ((void (*)(id, SEL))[touchBarItem methodForSelector:selector])(touchBarItem, selector);
+        }
     }
+}
+
+JNIEXPORT int JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_callIntObjectSelector(JNIEnv *env, jclass cls, jlong objectPointer, jstring javaSelector) {
+    void* cItemPointer = (void*)objectPointer;
+    if(cItemPointer == nullptr) {
+        return 0;
+    }
+    
+    NSObject *touchBarItem = (__bridge NSObject*) (cItemPointer);
+    if(touchBarItem == nil) {
+        return 0;
+    }
+    
+    const char *charSelectorValue = env->GetStringUTFChars(javaSelector, 0);
+    if(charSelectorValue == nullptr) {
+        return 0;
+    }
+    
+    NSString *selectorStr = [NSString stringWithUTF8String:charSelectorValue];
+    env->ReleaseStringUTFChars(javaSelector, charSelectorValue);
+    
+    SEL selector = NSSelectorFromString(selectorStr);
+    if(selectorStr != nil && [touchBarItem respondsToSelector:selector]) {
+        return ((int (*)(id, SEL))[touchBarItem methodForSelector:selector])(touchBarItem, selector);
+    }
+    
+    return 0;
 }
 
 JNIEXPORT jlong JNICALL Java_com_thizzer_jtouchbar_JTouchBarJNI_getAWTViewPointer0(JNIEnv *env, jclass cls, jobject component) {
