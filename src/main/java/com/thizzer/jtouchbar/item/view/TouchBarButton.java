@@ -14,6 +14,9 @@ import com.thizzer.jtouchbar.JTouchBarJNI;
 import com.thizzer.jtouchbar.common.*;
 import com.thizzer.jtouchbar.item.view.action.TouchBarViewAction;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class TouchBarButton extends TouchBarView {
 
 	public enum ButtonType {
