@@ -43,6 +43,7 @@ public class TouchBarButton extends TouchBarView {
 	
 	private Image _image;
 	private Image _alternateImage;
+	private Image _dataInputStream_image;
 	
 	private int _imagePosition = ImagePosition.OVERLAPS;
 	
@@ -78,6 +79,15 @@ public class TouchBarButton extends TouchBarView {
 
 	public void setImage(Image image) {
 		_image = image;
+		update();
+	}
+	
+	public Image getImageDataInputStream() {
+		return _dataInputStream_image;
+	}
+	
+	public void setImage(InputStream dataInputStream_image) throws IOException {
+		_dataInputStream_image = new Image(dataInputStream_image);
 		update();
 	}
 	
