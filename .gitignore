@@ -1,3 +1,5 @@
 /target/
 hs_err_pid*.log
 xcuserdata/
+src/debug/
+src/release/
