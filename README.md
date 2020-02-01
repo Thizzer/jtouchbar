@@ -4,6 +4,8 @@
 
 Java library for using the touchbar API on supported macbooks.
 
+Visit [Apple's](https://support.apple.com/en-us/HT207055) website for more information on the touchbar itself.
+
 ## Support the Developers!
 
 Please take a look at the other stuff the developers are working on and support them in other ways.
