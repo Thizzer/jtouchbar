@@ -11,7 +11,6 @@
 #import "JTouchBarBridge.h"
 
 #import <Cocoa/Cocoa.h>
-#import <JavaVM/JavaVM.h>
 
 #include "JNIContext.h"
 #include "JavaTouchBarResponder.h"
